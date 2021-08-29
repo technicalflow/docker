@@ -1,19 +1,19 @@
-### My docker test environment
-# code-on-lan
+# My docker test environment
+### code-on-lan
     My version of VS Code server for web for AMD64 and ARM architectures
-# dokuwiki
+### dokuwiki
     Docker compose file for dokuwiki.org
-# heimdall
+### heimdall
     Docker compose file for heimdall link landing page
-# nginx
+### nginx
     As simple as can be nginx docker compose file
-# portainer
+### portainer
     Docker Compose fo Portainer.io
-# pwsharm
+### pwsharm
     My version of quickly accessible Powershell 7 docker container with AZ module for ARM
-# pwshpc
+### pwshpc
     My version of quickly accessible Powershell 7 docker container with AZ module for PC
-# unifi
+### unifi
     Unifi controller docker compose file
-# webapp
+### webapp
     Sample website to show Docker Stack load balancing capabilities in Docker Swarm mode
