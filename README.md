@@ -8,7 +8,7 @@
 ### nginx
     As simple as can be nginx docker compose file
 ### portainer
-    Docker Compose fo Portainer.io
+    Docker compose file for Portainer.io
 ### pwsharm
     My version of quickly accessible Powershell 7 docker container with AZ module for ARM
 ### pwshpc

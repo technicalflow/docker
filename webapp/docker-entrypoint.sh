@@ -12,7 +12,7 @@ COLOR="Blue"
 NODE_NAME=$(cat /etc/hostname)
 DISTRO=$(cat /etc/os-release  | grep PRETTY | cut -c 13-50)
 #NGINX_VERSION=$(curl -sI localhost |grep Server)
-#IP=$(awk '/32 host/ { print f } {f=$2}' <<< "$(</proc/net/fib_trie)" |  grep -v 127)y
+#IP=$(awk '/32 host/ { print f } {f=$2}' <<< "$(</proc/net/fib_trie)" |  grep -v 127)
 
 # Add 'Node Name' to static HTML page if NODE_NAME has been set
 
@@ -25,7 +25,7 @@ sed -i '/Distribution/ i <h2>Node Name: '"$NODE_NAME"'<\/h2>' /usr/share/nginx/h
 # base64 encoded image embedded in the src attribute
 tmpfile=$(mktemp -p /tmp)
 echo '<h2>Container IP: ' > /tmp/IP
-awk '/32 host/ { print f } {f=$2}' <<< "$(</proc/net/fib_trie)" |  grep -v 127 >> /tmp/IP
+awk '/32 host/ { print f } {f=$2}' <<< "$(</proc/net/fib_trie)" |  grep -v 127 | tail -n 3 >> /tmp/IP
 echo '</h2>' >> /tmp/IP
 
 # Construct the src and alt attributes of the img tag, and write the tag to the
