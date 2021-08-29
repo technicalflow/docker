@@ -1,0 +1,25 @@
+version: "3"
+services:
+  newnginx:
+    image: nginx:latest
+    deploy:
+      replicas: 6
+    restart: always
+    environment:
+      - TZ=Europe/Warsaw
+    ports:
+      - 80:80
+
+    volumes:
+      - data3:/usr/share/nginx/html
+
+    volumes:
+      - type: volume
+        source: data3
+        target: /usr/share/nginx/html
+
+
+volumes:
+  data3:
+    external: true
+

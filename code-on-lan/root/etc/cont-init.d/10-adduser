@@ -1,0 +1,23 @@
+#!/usr/bin/with-contenv bash
+
+PUID=${PUID:-911}
+PGID=${PGID:-911}
+
+useradd -m -d /home/ -s /bin/bash admin
+groupmod -o -g "$PGID" admin
+usermod -o -u "$PUID" admin
+usermod -aG users,sudo admin
+
+echo '
+To support LSIO projects visit:
+https://www.linuxserver.io/donate/
+-------------------------------------
+GID/UID
+-------------------------------------'
+echo "
+User uid:    $(id -u admin)
+User gid:    $(id -g admin)
+-------------------------------------
+"
+chown admin:admin /config
+chown admin:admin /home/admin

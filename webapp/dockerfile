@@ -1,0 +1,19 @@
+#App image
+	FROM nginx:latest
+	LABEL maintainer="marek@techfellow.it"
+
+	RUN apt update && apt upgrade -y
+
+	COPY website/index.html /usr/share/nginx/html
+	COPY docker-entrypoint.sh /tmp
+	HEALTHCHECK --interval=1m --timeout=5s CMD curl -f http://localhost/ || exit 1
+	
+	WORKDIR  /usr/share/nginx/html
+	
+	EXPOSE 80
+	EXPOSE 443
+	ENTRYPOINT ["/tmp/docker-entrypoint.sh"]
+	USER 1000
+#    CMD ["/usr/local/nginx/sbin/nginx", "-g", "daemon off;"]
+
+	CMD ["/usr/sbin/nginx", "-g", "daemon off;"]

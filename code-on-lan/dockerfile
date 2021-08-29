@@ -1,0 +1,16 @@
+FROM linuxserver/code-server
+ARG ARCH=/scriptpc.sh
+
+# set version label
+LABEL maintainer="marek@techfellow.it"
+
+# environment settings
+ENV HOME="/home/admin"
+
+# add local files
+COPY ./root/ /
+
+RUN sh $ARCH
+# ports and volumes
+
+EXPOSE 80

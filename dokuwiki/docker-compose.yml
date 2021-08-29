@@ -1,0 +1,16 @@
+---
+version: "3.6"
+services:
+  dokuwiki:
+    image: ghcr.io/linuxserver/dokuwiki
+    container_name: dokuwiki
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Warsaw
+    volumes:
+      - './config:/config'
+#    command:  sleep 5
+
+    restart: unless-stopped
+

@@ -1,0 +1,11 @@
+#!/usr/bin/with-contenv bash
+
+exec \
+        s6-setuidgid admin \
+                /usr/local/bin/code-server \
+                        --bind-addr 0.0.0.0:80 \
+                        --user-data-dir /config/data \
+                        --extensions-dir /config/extensions \
+                        --disable-telemetry \
+                        --auth "password" \
+                        /home/admin
