@@ -15,5 +15,5 @@ User admin is added to sudoers file and is able to run commands without password
 if you need to change shell password run <br>
 docker exec -it col passwd admin
 
-# Currently the AZ Cli installation is stopped for ARM
-# Size of image will be 2.68GB
+### Currently the AZ Cli installation is stopped for ARM
+### Size of image will be 2.68GB
