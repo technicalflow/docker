@@ -1,3 +1,3 @@
-# Powershell for PC docker image
-docker build -t techfellow/pwshpc . 
-docker run -it techfellow/pwshpc pwsh
+# Powershell docker image with AZ module for PC
+docker build -t pwshpc . 
+docker run -it pwshpc pwsh

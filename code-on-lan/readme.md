@@ -8,7 +8,8 @@ To change it enter new in /home/admin/.config/code-server/config.yaml
 
 Script will change default user from abc to admin and install powershell, docker client, terraform and Az Cli (currently only on AMD64 arch)
 
-Default port is 8080
+Default internal port is 80
+Default external port in docker compose is 8080
 
 User admin is added to sudoers file and is able to run commands without password but
 if you need to change shell password run 
