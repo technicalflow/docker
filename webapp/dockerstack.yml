@@ -16,8 +16,11 @@ services:
 #      - './website:/var/www/html'
 #      - './website:/usr/share/nginx/html/'
     deploy:
+      # labels:
+      #   servicename: website
       replicas: 6
       mode: replicated
+      # endpoint_mode: dnsrr
       # placement:
 #        constraints: [node.role == manager]
         # preferences: 
