@@ -19,7 +19,7 @@ apt-get install ca-certificates curl apt-transport-https lsb-release gnupg libss
 
 echo "**** powershell ****" 
 # powershell
-PS_VERSION=7.1.4
+PS_VERSION=7.2.0
 PS_ARCH=arm32
 PS_PACKAGE=powershell-$PS_VERSION-linux-$PS_ARCH.tar.gz
 curl -fsSL https://github.com/PowerShell/PowerShell/releases/download/v$PS_VERSION/$PS_PACKAGE -o /config/$PS_PACKAGE
@@ -51,8 +51,8 @@ rm -rf /config/$DOCKER_PACKAGE
 
 echo "**** Terraform ****" 
 # terraform
-TF_VERSION=1.0.5
-TF_PACKAGE=terraform_1.0.5_linux_arm.zip
+TF_VERSION=1.0.10
+TF_PACKAGE=terraform_1.0.10_linux_arm.zip
 curl -fsSL https://releases.hashicorp.com/terraform/$TF_VERSION/$TF_PACKAGE -o /config/$TF_PACKAGE
 sudo unzip /config/$TF_PACKAGE -d /usr/bin/
 rm -rf /config/$TF_PACKAGE
