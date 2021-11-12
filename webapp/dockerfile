@@ -13,7 +13,7 @@
 	EXPOSE 80
 	EXPOSE 443
 	ENTRYPOINT ["/tmp/docker-entrypoint.sh"]
-#	USER 1000
+#	USER 1000 
 #    CMD ["/usr/local/nginx/sbin/nginx", "-g", "daemon off;"]
 
 	CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
