@@ -1,4 +1,4 @@
-FROM fedora:34
+FROM fedora:36
 
 RUN dnf -y install httpd mod_wsgi python-flask traceroute && dnf clean all
 RUN mkdir -vp /var/www/html/ip/icanhaz/
