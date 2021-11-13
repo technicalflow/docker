@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  website:
+    build: .
+    container_name: ipcheck
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      TZ: 'Europe/Warsaw'
+
+    restart: unless-stopped
+#    deploy:
+#      replicas: 5
