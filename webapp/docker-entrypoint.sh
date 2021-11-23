@@ -25,6 +25,7 @@ sed -i '/Distribution/ i <h2>Node Name: '"$NODE_NAME"'<\/h2>' /usr/share/nginx/h
 # base64 encoded image embedded in the src attribute
 tmpfile=$(mktemp -p /tmp)
 echo '<h2>Container IP: ' > /tmp/IP
+#ip a | grep inet |  grep -v 127 | cut -c 10-22 | tail -n 3 >> /tmp/IP
 awk '/32 host/ { print f } {f=$2}' <<< "$(</proc/net/fib_trie)" |  grep -v 127 | tail -n 3 >> /tmp/IP
 echo '</h2>' >> /tmp/IP
 

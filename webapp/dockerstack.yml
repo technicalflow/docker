@@ -26,6 +26,8 @@ services:
         # preferences: 
         #   - spread: node.labels.dsw1
       update_config:
+        delay: 1S
+        order: start-first
         parallelism: 2
       restart_policy:
         condition: on-failure
