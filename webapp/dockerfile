@@ -2,7 +2,7 @@
 	FROM nginx:latest
 	LABEL maintainer="marek@techfellow.it"
 
-	RUN apt update && apt upgrade -y
+#	RUN apt update && apt upgrade -y
 
 	COPY website/index.html /usr/share/nginx/html
 	COPY docker-entrypoint.sh /tmp
@@ -11,7 +11,7 @@
 	WORKDIR  /usr/share/nginx/html
 	
 	EXPOSE 80
-	EXPOSE 443
+#	EXPOSE 443
 	ENTRYPOINT ["/tmp/docker-entrypoint.sh"]
 #	USER 1000 
 #    CMD ["/usr/local/nginx/sbin/nginx", "-g", "daemon off;"]
