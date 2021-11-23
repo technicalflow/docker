@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   website:
-    image: website
+    image: techfellow/webappa:latest
     networks:
       - website
     ports:
