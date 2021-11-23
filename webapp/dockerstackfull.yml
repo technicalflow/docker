@@ -1,0 +1,62 @@
+---
+version: "3.7"
+services:
+  debian:
+    image: techfellow/webappa:latest
+    networks:
+      - website
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      TZ: 'Europe/Warsaw'
+      NGINX_HOST: web.local
+      NGINX_PORT: 80
+    deploy:
+      # labels:
+      #   servicename: website
+      replicas: 3
+      mode: replicated
+      update_config:
+        delay: 1s
+        order: start-first
+        parallelism: 2
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '1'
+          memory: 32M
+  
+  alpine:
+    image: techfellow/webappa:alpine
+    networks:
+      - website
+    ports:
+      - "8080:80"
+      - "8443:443"
+    environment:
+      TZ: 'Europe/Warsaw'
+      NGINX_HOST: web.local
+      NGINX_PORT: 80
+    deploy:
+      # labels:
+      #   servicename: website
+      replicas: 3
+      mode: replicated
+      update_config:
+        delay: 1s
+        order: start-first
+        parallelism: 2
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '1'
+          memory: 32M
+
+
+networks:
+  website:
