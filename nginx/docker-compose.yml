@@ -1,12 +1,12 @@
 ---
-version: "3"
+version: "3.6"
 services:
   newnginx:
     image: nginx:latest
     hostname: nginx
     deploy:
       replicas: 1
-    #    command:  sleep 5
+    command:  /usr/sbin/nginx -g 'daemon off;'
     restart: always
     environment:
       - TZ=Europe/Warsaw
