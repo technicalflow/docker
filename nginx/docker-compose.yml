@@ -6,7 +6,6 @@ services:
     hostname: nginx
     deploy:
       replicas: 1
-
     #    command:  sleep 5
     restart: always
     environment:

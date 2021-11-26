@@ -4,6 +4,7 @@ services:
   col:
     build: .
     container_name: col
+    hostname: col
     ports:
       - "8080:80"
     environment:

@@ -15,7 +15,7 @@ services:
     environment:
       TZ: 'Europe/Warsaw'
       # WEBPASSWORD: 'set a secure password here or it will be random'
-      WEBPASSWORD: 'qwe123'
+      WEBPASSWORD: 'simpass111'
     # Volumes store your data between container upgrades
     volumes:
       - './etc-pihole/:/etc/pihole/'

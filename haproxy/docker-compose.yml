@@ -5,9 +5,11 @@ services:
     image: techfellow/webappa:alpine
     deploy:
       replicas: 4
-    restart: always
     environment:
       - TZ=Europe/Warsaw
+
+    restart: always
+
     networks:
        - lbnet
         # ipv4_address: 172.30.30.3/27
