@@ -4,13 +4,28 @@ services:
   dokuwiki:
     image: ghcr.io/linuxserver/dokuwiki
     container_name: dokuwiki
+    ports:
+      - '80:80'
+      - '443:443'
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Warsaw
     volumes:
       - './config:/config'
-#    command:  sleep 5
-
+      
     restart: unless-stopped
 
+
+#     networks:
+#       default:
+#           ipv4_address: 192.168.50.245
+
+
+# networks:
+#   default:
+#     external:
+#       name: macvlan
+#     ipam:
+#       config:
+#         - subnet: 192.168.50.240/29

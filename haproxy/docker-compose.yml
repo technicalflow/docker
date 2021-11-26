@@ -1,0 +1,45 @@
+---
+version: "3.6"
+services:
+  web:
+    image: techfellow/webappa:alpine
+    deploy:
+      replicas: 4
+    restart: always
+    environment:
+      - TZ=Europe/Warsaw
+    networks:
+       - lbnet
+        # ipv4_address: 172.30.30.3/27
+    # volumes:
+    #   - ./data:/usr/share/nginx/html
+
+  haproxy:
+    image: haproxy:2.4
+    # hostname: haproxy
+    depends_on:
+      - web
+    deploy:
+      replicas: 1
+    networks:
+      lbnet:
+        ipv4_address: 172.30.30.6
+    ports:
+      - 80:80
+    restart: always
+    environment:
+      - TZ=Europe/Warsaw
+    volumes:
+      - ./:/usr/local/etc/haproxy/
+
+volumes:
+  data:
+    external: false
+
+networks:
+  lbnet:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.30.30.0/29
+         gateway: 172.30.30.1
