@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 exec \
-        s6-setuidgid admin \
+        s6-setuidgid vsadmin \
                 /usr/local/bin/code-server \
                         --bind-addr 0.0.0.0:80 \
                         --user-data-dir /config/data \

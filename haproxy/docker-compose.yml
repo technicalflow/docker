@@ -5,6 +5,7 @@ services:
     image: techfellow/webappa:alpine
     deploy:
       replicas: 4
+    mem_limit: 8m
     environment:
       - TZ=Europe/Warsaw
 
@@ -28,6 +29,8 @@ services:
         ipv4_address: 172.30.30.6
     ports:
       - 80:80
+    mem_limit: 32m
+#    mem_reservation: 100m
     restart: always
     environment:
       - TZ=Europe/Warsaw
