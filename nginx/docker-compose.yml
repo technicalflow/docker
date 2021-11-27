@@ -22,7 +22,7 @@ services:
     #     target: /usr/share/nginx/html
 
 
-volumes:
-  data3:
-    external: false
+# volumes:
+#   data3:
+#     external: false
 
