@@ -5,7 +5,7 @@ ARG ARCH=/scriptpc.sh
 LABEL maintainer="marek@techfellow.it"
 
 # environment settings
-ENV HOME="/home/admin"
+ENV HOME="/home/vsadmin"
 
 # add local files
 COPY ./root/ /

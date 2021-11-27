@@ -10,7 +10,7 @@ LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DA
 LABEL maintainer="marek@techfellow.it"
 
 # environment settings
-ENV HOME="/home/admin"
+ENV HOME="/home/vsadmin"
 
 RUN \
   echo "**** install node repo ****" && \
@@ -62,8 +62,8 @@ RUN \
     /tmp/* \
     /var/lib/apt/lists/* \
     /var/tmp/* && \
-  useradd -m -d /home/admin -s /bin/bash admin && \
-  usermod -aG users,sudo admin
+  useradd -m -d /home/vsadmin -s /bin/bash vsadmin && \
+  usermod -aG users,sudo vsadmin
 
 # add local files
 COPY ./root/ /

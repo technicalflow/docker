@@ -4,19 +4,19 @@ mkdir -p /config/{extensions,data,workspace}
 
 # if [ -n "${SUDO_PASSWORD}" ] || [ -n "${SUDO_PASSWORD_HASH}" ]; then
 #   echo "setting up sudo access"
-#   if ! grep -q 'admin' /etc/sudoers; then
-#     echo "adding admin to sudoers"
-#     echo "admin ALL=(ALL:ALL) ALL" >> /etc/sudoers
+#   if ! grep -q 'vsadmin' /etc/sudoers; then
+#     echo "adding vsadmin to sudoers"
+#     echo "vsadmin ALL=(ALL:ALL) ALL" >> /etc/sudoers
 #   fi
 #   if [ -n "${SUDO_PASSWORD_HASH}" ]; then
 #     echo "setting sudo password using sudo password hash"
-#     sed -i "s|^admin:\!:|admin:${SUDO_PASSWORD_HASH}:|" /etc/shadow
+#     sed -i "s|^vsadmin:\!:|vsadmin:${SUDO_PASSWORD_HASH}:|" /etc/shadow
 #   else
 #     echo "setting sudo password using SUDO_PASSWORD env var"
-#     echo -e "${SUDO_PASSWORD}\n${SUDO_PASSWORD}" | passwd admin
+#     echo -e "${SUDO_PASSWORD}\n${SUDO_PASSWORD}" | passwd vsadmin
 #   fi
 # fi
 
 # permissions
-chown -R admin:admin /config
-chown -R admin:admin /home/admin
+chown -R vsadmin:vsadmin /config
+chown -R vsadmin:vsadmin /home/vsadmin
