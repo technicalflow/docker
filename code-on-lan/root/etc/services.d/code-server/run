@@ -8,4 +8,4 @@ exec \
                         --extensions-dir /config/extensions \
                         --disable-telemetry \
                         --auth "password" \
-                        /home/admin
+                        /home/vsadmin
