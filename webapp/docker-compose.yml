@@ -4,6 +4,7 @@ version: "3"
 services:
   website:
     build: .
+    # image: techfellow/webappa:alpine
     container_name: website
     ports:
       - "80:80"
