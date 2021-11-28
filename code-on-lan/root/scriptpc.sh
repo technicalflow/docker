@@ -57,7 +57,7 @@ echo "**** Terraform ****"
 TF_VERSION=1.0.11
 TF_PACKAGE=terraform_1.0.11_linux_amd64.zip
 curl -fsSL https://releases.hashicorp.com/terraform/$TF_VERSION/$TF_PACKAGE -o /config/$TF_PACKAGE
-sudo unzip /config/$TF_PACKAGE -d /usr/bin/
+unzip /config/$TF_PACKAGE -d /usr/bin/
 rm -rf /config/$TF_PACKAGE
 
 echo "**** Cleanup ****" 
@@ -72,7 +72,7 @@ rm -rf /defaults
 echo "**** Creating User ****"
 useradd -d /home/vsadmin -s /bin/bash vsadmin && \
 usermod -aG users,sudo vsadmin && \
-echo "vsadmin ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/vsadmin
+echo "vsadmin ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/vsadmin
 
 echo "**** Files ****" 
 #Files
