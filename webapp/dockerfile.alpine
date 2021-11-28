@@ -2,16 +2,18 @@
 FROM nginx:stable-alpine
 LABEL maintainer="marek@techfellow.it"
 
-COPY website/index.html /usr/share/nginx/html
-COPY docker-entrypoint.sh /tmp
+#COPY website/index.html /usr/share/nginx/html
+COPY docker-entrypoint.sh /
 HEALTHCHECK --interval=1m --timeout=5s CMD curl -f http://localhost/ || exit 1
 
 WORKDIR  /usr/share/nginx/html
 
-ENTRYPOINT ["/tmp/docker-entrypoint.sh"]
+# ENTRYPOINT ["/docker-entrypoint.sh"]
+RUN chown -R nginx:nginx /usr/share/nginx/html/
+RUN sh /docker-entrypoint.sh
 EXPOSE 80
 STOPSIGNAL SIGQUIT
 
-#       USER 1000 
+#USER nginx
 
 CMD ["nginx", "-g", "daemon off;"]

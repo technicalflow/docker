@@ -2,33 +2,50 @@
 
 set -e
 
-style="padding: 20px;"
-COLOR="Blue"
+cat << EOFhtml > /usr/share/nginx/html/index.html
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+Docker Website !
+</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+        text-align: center;
+        background-color: azure;
+    }
+</style>
+</head>
+<body>
+<h2>Hello World !</h2>
+<img style="padding: 20px;" src="https://www.docker.com/sites/default/files/social/docker_facebook_share.png" alt="Blue container">
+<br>
+<h2>Hostname: </h2>
+<h2>Distribution: </h2>
+<h2>Container IP: </h2>
+<br>
+</body>
+</html>
+EOFhtml
 
 HOSTNAME=$(cat /etc/hostname)
 DISTRO=$(cat /etc/os-release  | grep PRETTY | cut -c 13-50)
-# NGINX_VERSION=$(/usr/sbin/nginx -v)
+DI=$(echo $DISTRO | sed 's/\// /')
+IP=$(awk '/32 host/ { print f } {f=$2}' /proc/net/fib_trie | sort | uniq | grep -v 127)
+# NGINX_VERSION=$(/usr/sbin/ngintx -v)
 
-sed -i '/<br>/ i <h2>Distribution: '"$DISTRO"'<\/h2>' /usr/share/nginx/html/index.html
-sed -i '/Distribution/ i <h2>Hostname: '"$HOSTNAME"'<\/h2>' /usr/share/nginx/html/index.html
-# sed -i '/Hostname/ i <h2>'"$NGINX_VERSION"'<br>' /usr/share/nginx/html/index.html
-
-tmpfile=$(mktemp -p /tmp)
-echo '<h2>Container IP: ' > /tmp/IP
 #ip a | grep inet |  grep -v 127 | cut -c 10-22 | tail -n 3 >> /tmp/IP
 #awk '/32 host/ { print f } {f=$2}' << < "$(</proc/net/fib_trie)" |  grep -v 127 | tail -n 3 >> /tmp/IP
-awk '/32 host/ { print f } {f=$2}' /proc/net/fib_trie | sort | uniq | grep -v 127 >> /tmp/IP
-echo '</h2>' >> /tmp/IP
+#awk '/32 host/ { print f } {f=$2}' /proc/net/fib_trie | sort | uniq | grep -v 127 > /IP
+#sed -i 's/\// /' 
 
-src="https://www.docker.com/sites/default/files/social/docker_facebook_share.png"
-alt="$(echo $COLOR)  container"
-echo "<img style=\""$style"\" src=\""$src"\" alt=\""$alt"\">" > $tmpfile
-
-sed -i '/Hello/ r '"$tmpfile"'' /usr/share/nginx/html/index.html
-sed -i '/Distribution/ r '"/tmp/IP"'' /usr/share/nginx/html/index.html
-
-rm -rf /tmp/"${tmpfile}"
-rm -rf /tmp/IP
+#sed ' {n;/<h2>Hostname: </h2>/ {s/is/was/}}' /usr/share/nginx/html/index.html
+sed -i 's/<h2>Distribution:.*/<h2>Distribution: '"$DI"'<\/h2>/' /usr/share/nginx/html/index.html
+sed -i 's/<h2>Hostname:.*/<h2>Hostname: '"$HOSTNAME"'<\/h2>/' /usr/share/nginx/html/index.html
+sed -i 's/<h2>Container IP:.*/<h2>Container IP: '"$IP"'<\/h2>/' /usr/share/nginx/html/index.html
 
 # echo DONE
 exec "$@"
