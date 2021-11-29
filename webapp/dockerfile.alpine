@@ -3,12 +3,12 @@ FROM nginx:stable-alpine
 LABEL maintainer="marek@techfellow.it"
 
 #COPY website/index.html /usr/share/nginx/html
-COPY docker-entrypoint.sh /
+COPY my-entrypoint.sh /
 HEALTHCHECK --interval=1m --timeout=5s CMD curl -f http://localhost/ || exit 1
 
 WORKDIR  /usr/share/nginx/html
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/my-entrypoint.sh"]
 EXPOSE 80
 
 RUN chown -R nginx:nginx /usr/share/nginx/html/

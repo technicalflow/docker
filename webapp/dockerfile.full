@@ -42,8 +42,8 @@ WORKDIR /usr/local/nginx/html
 
 # Customise static content, and configuration
 COPY --from=build /usr/local/nginx /usr/local/nginx
-COPY assets /usr/local/nginx/html/
-COPY nginx.conf /usr/local/nginx/conf/
+#COPY assets /usr/local/nginx/html/
+#COPY nginx.conf /usr/local/nginx/conf/
 
 # Symlink access and error logs to /dev/stdout and /dev/stderr,
 # in order to make use of Docker's logging mechanism

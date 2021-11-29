@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -x
 
 cat << EOFhtml > /usr/share/nginx/html/index.html
 <!DOCTYPE html>
@@ -32,20 +32,18 @@ Docker Website !
 EOFhtml
 
 HOSTNAME=$(cat /etc/hostname)
-DISTRO=$(cat /etc/os-release  | grep PRETTY | cut -c 13-50)
-DI=$(echo $DISTRO | sed 's/\// /')
-IP=$(awk '/32 host/ { print f } {f=$2}' /proc/net/fib_trie | sort | uniq | grep -v 127)
-# NGINX_VERSION=$(/usr/sbin/ngintx -v)
+DISTRO=$(cat /etc/os-release | grep PRETTY | cut -c 13-50)
+DIST=$(echo $DISTRO | sed 's/\// /' | cut -c 1-20)
+IP=$(awk '/32 host/ { print f } {f=$2}' /proc/net/fib_trie | sort | uniq | grep -v 127 | sed ':a; N; $!ba; s/\n/ /g')
+# NGINX_VERSION=$(/usr/sbin/nginx -v)
 
 #ip a | grep inet |  grep -v 127 | cut -c 10-22 | tail -n 3 >> /tmp/IP
 #awk '/32 host/ { print f } {f=$2}' << < "$(</proc/net/fib_trie)" |  grep -v 127 | tail -n 3 >> /tmp/IP
 #awk '/32 host/ { print f } {f=$2}' /proc/net/fib_trie | sort | uniq | grep -v 127 > /IP
-#sed -i 's/\// /' 
 
-#sed ' {n;/<h2>Hostname: </h2>/ {s/is/was/}}' /usr/share/nginx/html/index.html
-sed -i 's/<h2>Distribution:.*/<h2>Distribution: '"$DI"'<\/h2>/' /usr/share/nginx/html/index.html
-sed -i 's/<h2>Hostname:.*/<h2>Hostname: '"$HOSTNAME"'<\/h2>/' /usr/share/nginx/html/index.html
-sed -i 's/<h2>Container IP:.*/<h2>Container IP: '"$IP"'<\/h2>/' /usr/share/nginx/html/index.html
+sed -i 's/<h2>Hostname:.*/<h2>Hostname: '"$HOSTNAME"'<\/h2> /' /usr/share/nginx/html/index.html
+sed -i 's/<h2>Distribution:.*/<h2>Distribution: '"$DIST"'<\/h2> /' /usr/share/nginx/html/index.html
+sed -i 's/<h2>Container IP:.*/<h2>Container IP: '"$IP"'<\/h2> /' /usr/share/nginx/html/index.html
 
 # echo DONE
 exec "$@"
