@@ -134,6 +134,9 @@ set -g terminal-overrides xterm*:smcup@:rmcup@
 # setw -g window-status-bell-style 'fg=colour255 bg=colour1 bold'
 EOFtmux
 
+chown -R vsadmin:vsadmin /config
+chown -R vsadmin:vsadmin /home/vsadmin
+
 echo DONE
 rm -rf /scriptarm.sh
 rm -rf /scriptpc.sh

@@ -15,7 +15,7 @@ echo "**** update ****"
 apt update
 apt upgrade -y
 apt install mc tmux htop mtr-tiny nano wget iputil* net-tools nmap dialog -y
-apt-get install ca-certificates curl apt-transport-https lsb-release gnupg libssl-dev libffi-dev python3-dev build-essential git libunwind8 libicu60 less tzdata ansible -y
+apt-get install ca-certificates curl apt-transport-https lsb-release gnupg libssl-dev libffi-dev python3-dev build-essential git libunwind8 less tzdata ansible -y
 
 echo "**** powershell ****" 
 # powershell
@@ -68,7 +68,7 @@ rm -rf /defaults
 
 echo "**** Creating User ****"
 useradd -d /home/vsadmin -s /bin/bash vsadmin && \
-usermod -aG users,sudo vsadmin
+usermod -aG users,sudo vsadmin && \
 echo "vsadmin ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/vsadmin
 
 echo "**** Files ****" 
@@ -130,6 +130,9 @@ set -g terminal-overrides xterm*:smcup@:rmcup@
 
 # setw -g window-status-bell-style 'fg=colour255 bg=colour1 bold'
 EOFtmux
+
+chown -R vsadmin:vsadmin /config
+chown -R vsadmin:vsadmin /home/vsadmin
 
 echo DONE
 rm -rf /scriptpc.sh

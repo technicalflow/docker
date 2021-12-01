@@ -3,10 +3,10 @@
 PUID=${PUID:-911}
 PGID=${PGID:-911}
 
-useradd -m -d /home/ -s /bin/bash vsadmin
+#useradd -m -d /home/ -s /bin/bash vsadmin
 groupmod -o -g "$PGID" vsadmin
 usermod -o -u "$PUID" vsadmin
-usermod -aG users,sudo vsadmin
+# usermod -aG users,sudo vsadmin
 
 echo '
 To support LSIO projects visit:
@@ -19,5 +19,5 @@ User uid:    $(id -u vsadmin)
 User gid:    $(id -g vsadmin)
 -------------------------------------
 "
-chown vsadmin:vsadmin /config
-chown vsadmin:vsadmin /home/vsadmin
+#chown vsadmin:vsadmin /config
+#chown vsadmin:vsadmin /home/vsadmin

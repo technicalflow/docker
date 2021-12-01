@@ -1,6 +1,9 @@
 #!/usr/bin/with-contenv bash
 
 mkdir -p /config/{extensions,data,workspace}
+mkdir -p /config/data/logs
+
+chown -R vsadmin:vsadmin /config/
 
 # if [ -n "${SUDO_PASSWORD}" ] || [ -n "${SUDO_PASSWORD_HASH}" ]; then
 #   echo "setting up sudo access"
@@ -18,5 +21,5 @@ mkdir -p /config/{extensions,data,workspace}
 # fi
 
 # permissions
-chown -R vsadmin:vsadmin /config
-chown -R vsadmin:vsadmin /home/vsadmin
+# chown -R vsadmin:vsadmin /config
+# chown -R vsadmin:vsadmin /home/vsadmin
