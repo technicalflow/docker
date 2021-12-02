@@ -20,9 +20,10 @@ echo "**** update ****"
 apt-get update
 apt-get upgrade -y
 apt-get install mc tmux htop mtr-tiny nano wget iputil* net-tools nmap unzip dialog -y
-apt-get install ca-certificates curl apt-transport-https lsb-release gnupg libssl-dev libffi-dev python3-dev build-essential git libunwind8 libicu60 less tzdata ansible -y
+apt-get install ca-certificates curl apt-transport-https lsb-release gnupg libssl-dev libffi-dev python3-dev build-essential git libunwind8 less tzdata ansible -y
 
 if [ "$HW" = "x86_64" ]; then
+echo 'Your architecture parameters'
 PS_ARCH=x64
 DOCKER_ARCH=x86_64
 TF_PACKAGE=terraform_1.0.11_linux_amd64.zip
@@ -33,17 +34,17 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 else
     if [ "$HW" = "armv7l" ]; then
+echo 'Your architecture parameters'
 PS_ARCH=arm32
 DOCKER_ARCH=armhf
 TF_PACKAGE=terraform_1.0.11_linux_arm.zip
+apt-get install -y libicu60
 
 else
   echo "Unsupported platform"
 fi
 fi
 echo "**** powershell ****" 
-# powershell
-
 PS_PACKAGE=powershell-$PS_VERSION-linux-$PS_ARCH.tar.gz
 curl -fsSL https://github.com/PowerShell/PowerShell/releases/download/v$PS_VERSION/$PS_PACKAGE -o /config/$PS_PACKAGE
 mkdir -p /usr/local/share/pwsh/
@@ -58,7 +59,6 @@ pwsh -command update-module
 pwsh -command install-module az -force
 
 echo "**** docker ****" 
-# docker
 DOCKER_PACKAGE=docker-$DOCKER_VERSION.tgz
 curl -fsSL https://download.docker.com/linux/static/stable/$DOCKER_ARCH/$DOCKER_PACKAGE -o /config/$DOCKER_PACKAGE
 tar -xzf /config/$DOCKER_PACKAGE -C /usr/local/share/
@@ -66,14 +66,11 @@ ln -s /usr/local/share/docker/docker /usr/bin/docker
 rm -rf /config/$DOCKER_PACKAGE
 
 echo "**** Terraform ****" 
-# terraform
-
 curl -fsSL https://releases.hashicorp.com/terraform/$TF_VERSION/$TF_PACKAGE -o /config/$TF_PACKAGE
 unzip /config/$TF_PACKAGE -d /usr/bin/
 rm -rf /config/$TF_PACKAGE
 
 echo "**** Cleanup ****" 
-#Cleanup
 apt-get autoremove -y
 apt-get purge -y
 apt-get clean
@@ -83,13 +80,12 @@ rm -rf /defaults
 
 echo "**** Creating User ****"
 useradd -d /home/vsadmin -s /bin/bash vsadmin && \
-usermod -aG users,sudo vsadmin
+usermod -aG users,sudo vsadmin && \
 echo "vsadmin ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/vsadmin
 chown -R vsadmin:vsadmin /config
 chown -R vsadmin:vsadmin /home/vsadmin
 
 echo "**** Files ****" 
-#Files
 touch /home/vsadmin/.bashrc
 echo "
 HISTSIZE=2000
@@ -148,5 +144,9 @@ set -g terminal-overrides xterm*:smcup@:rmcup@
 # setw -g window-status-bell-style 'fg=colour255 bg=colour1 bold'
 EOFtmux
 
+chown -R vsadmin:vsadmin /home/vsadmin
+
 echo DONE
 rm -rf /script.sh
+rm -rf /scriptarm.sh
+rm -rf /scriptpc.sh
