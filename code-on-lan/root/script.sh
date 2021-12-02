@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -x
+set -e
 
 PLATFORM=linux
 HW=$(uname -m)
@@ -53,10 +53,9 @@ ln -s /usr/local/share/pwsh/pwsh /usr/bin/pwsh
 rm -rf /config/$PS_PACKAGE
 
 echo "**** powershell module az ****" 
-# pwsh install az module
 pwsh -command set-psrepository -name PSGallery -installationpolicy trusted
 pwsh -command update-module
-pwsh -command install-module az -force
+#pwsh -command install-module az -force
 
 echo "**** docker ****" 
 DOCKER_PACKAGE=docker-$DOCKER_VERSION.tgz

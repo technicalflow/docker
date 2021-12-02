@@ -1,5 +1,5 @@
 FROM linuxserver/code-server
-ARG ARCH=/scriptpc.sh
+ARG ARCH=/script.sh
 
 # set version label
 LABEL maintainer="marek@techfellow.it"
