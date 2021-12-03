@@ -8,7 +8,7 @@ PS_VERSION=7.2.0
 DOCKER_VERSION=20.10.8
 TF_VERSION=1.0.11
 
-echo 'Install script for code on lan in $PLATFORM on $HW environment'
+echo 'Install script for code on lan environment'
 
 export DEBIAN_FRONTEND=noninteractive
 export HOME="/home/vsadmin"
@@ -16,7 +16,6 @@ export HOME="/home/vsadmin"
 echo "Europe/Warsaw" > /etc/timezone
 
 echo "**** update ****" 
-# update and tools installation
 apt-get update
 apt-get upgrade -y
 apt-get install mc tmux htop mtr-tiny nano wget iputil* net-tools nmap unzip dialog -y
@@ -28,8 +27,7 @@ PS_ARCH=x64
 DOCKER_ARCH=x86_64
 TF_PACKAGE=terraform_1.0.11_linux_amd64.zip
 
-echo "**** AZ CLI ****"
-# Azure CLI installation
+echo "**** AZ CLI Installation ****"
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 else
@@ -38,7 +36,7 @@ echo 'Your architecture parameters'
 PS_ARCH=arm32
 DOCKER_ARCH=armhf
 TF_PACKAGE=terraform_1.0.11_linux_arm.zip
-apt-get install -y libicu60
+#apt-get install -y libicu66
 
 else
   echo "Unsupported platform"
