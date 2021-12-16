@@ -2,16 +2,17 @@
 # as a contained environment accessed remotely to retrieve or drop files for
 # archival.
 FROM centos:centos7
-MAINTAINER Jose De la Rosa "https://github.com/jose-delarosa"
+LABEL MAINTAINER 'Jose De la Rosa "https://github.com/jose-delarosa"'
 
 # User we'll use to login with
-ENV USER jose
+ENV USER sshadmin
 
 # Update and install required packages
 RUN yum -y update && yum -y install openssh-server rsync && yum clean all
 
 # Create needed SSH keys
 RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key
+ENTRYPOINT [ "echo /etc/ssh/ssh_host_rsa_key" ] 
 
 # Setup for certificate login ONLY
 RUN sed -i -e 's/#RSAAuthentication yes/RSAAuthentication yes/' \

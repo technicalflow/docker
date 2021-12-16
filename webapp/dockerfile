@@ -6,7 +6,7 @@ LABEL maintainer="marek@techfellow.it"
 
 # COPY website/index.html /usr/share/nginx/html
 COPY my-entrypoint.sh /
-HEALTHCHECK --interval=1m --timeout=5s CMD curl -f http://localhost/ || exit 1
+HEALTHCHECK --interval=3m --timeout=5s CMD curl -f http://localhost/ || exit 1
 
 WORKDIR  /usr/share/nginx/html
 
