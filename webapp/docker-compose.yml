@@ -17,7 +17,6 @@ services:
 #    volumes:
 #      - './website:/var/www/html'
 #      - './website:/usr/share/nginx/html/'
-
-    restart: unless-stopped
+    restart: always
 #    deploy:
 #      replicas: 5

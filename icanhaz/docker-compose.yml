@@ -1,17 +1,27 @@
 ---
-version: "3"
+version: "3.3"
 
 services:
   website:
     build: .
     container_name: ipcheck
-    
     ports:
       - "80:80"
       - "443:443"
     environment:
       TZ: 'Europe/Warsaw'
-
-    restart: unless-stopped
+    mem_limit: 32m
+    restart: always
 #    deploy:
 #      replicas: 5
+#     mac_address: 02:42:c0:a8:32:f9
+
+#     networks:
+#       default:
+#         ipv4_address: 192.168.50.241
+
+# networks:
+#   default:
+# #    external:
+#     name: macvlan
+
