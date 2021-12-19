@@ -4,9 +4,9 @@ set -e
 
 PLATFORM=linux
 HW=$(uname -m)
-PS_VERSION=7.2.0
-DOCKER_VERSION=20.10.8
-TF_VERSION=1.0.11
+PS_VERSION=7.2.1
+DOCKER_VERSION=20.10.12
+TF_VERSION=1.1.2
 
 echo 'Install script for code on lan environment'
 
@@ -22,27 +22,27 @@ apt-get install mc tmux htop mtr-tiny nano wget iputil* net-tools nmap unzip dia
 apt-get install ca-certificates curl apt-transport-https lsb-release gnupg libssl-dev libffi-dev python3-dev build-essential git libunwind8 less tzdata ansible -y
 
 if [ "$HW" = "x86_64" ]; then
-echo 'Your architecture parameters'
+echo 'Your architecture is x86_64'
 PS_ARCH=x64
 DOCKER_ARCH=x86_64
-TF_PACKAGE=terraform_1.0.11_linux_amd64.zip
+TF_PACKAGE=terraform_1.1.2_linux_amd64.zip
 
 echo "**** AZ CLI Installation ****"
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 else
     if [ "$HW" = "armv7l" ]; then
-echo 'Your architecture parameters'
+echo 'Your architecture is ARM'
 PS_ARCH=arm32
 DOCKER_ARCH=armhf
-TF_PACKAGE=terraform_1.0.11_linux_arm.zip
+TF_PACKAGE=terraform_1.1.2_linux_arm.zip
 #apt-get install -y libicu66
 
 else
   echo "Unsupported platform"
 fi
 fi
-echo "**** powershell ****" 
+echo "**** Installing Powershell ****" 
 PS_PACKAGE=powershell-$PS_VERSION-linux-$PS_ARCH.tar.gz
 curl -fsSL https://github.com/PowerShell/PowerShell/releases/download/v$PS_VERSION/$PS_PACKAGE -o /config/$PS_PACKAGE
 mkdir -p /usr/local/share/pwsh/
@@ -50,19 +50,21 @@ tar -xzf /config/$PS_PACKAGE -C /usr/local/share/pwsh/
 ln -s /usr/local/share/pwsh/pwsh /usr/bin/pwsh
 rm -rf /config/$PS_PACKAGE
 
-echo "**** powershell module az ****" 
+echo "**** Update Powershell Modules ****" 
 pwsh -command set-psrepository -name PSGallery -installationpolicy trusted
 pwsh -command update-module
+
+# echo "**** Installing Powershell AZ Module ****" 
 #pwsh -command install-module az -force
 
-echo "**** docker ****" 
+echo "**** Installing Docker client ****" 
 DOCKER_PACKAGE=docker-$DOCKER_VERSION.tgz
 curl -fsSL https://download.docker.com/linux/static/stable/$DOCKER_ARCH/$DOCKER_PACKAGE -o /config/$DOCKER_PACKAGE
 tar -xzf /config/$DOCKER_PACKAGE -C /usr/local/share/
 ln -s /usr/local/share/docker/docker /usr/bin/docker
 rm -rf /config/$DOCKER_PACKAGE
 
-echo "**** Terraform ****" 
+echo "**** Installing Terraform ****" 
 curl -fsSL https://releases.hashicorp.com/terraform/$TF_VERSION/$TF_PACKAGE -o /config/$TF_PACKAGE
 unzip /config/$TF_PACKAGE -d /usr/bin/
 rm -rf /config/$TF_PACKAGE

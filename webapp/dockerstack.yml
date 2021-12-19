@@ -15,6 +15,8 @@ services:
 #    volumes:
 #      - './website:/var/www/html'
 #      - './website:/usr/share/nginx/html/'
+    # secrets:
+    #   - db-password
     deploy:
       # labels:
       #   servicename: website
@@ -32,6 +34,7 @@ services:
       restart_policy:
         condition: on-failure
         max_attempts: 3
+        delay: 5s
       resources:
         limits:
           cpus: '1'
@@ -39,3 +42,8 @@ services:
 
 networks:
   website:
+
+# secrets:
+#   db-password:
+#     file: ./secret-ghost-db
+#     name: db-password

@@ -36,6 +36,8 @@ DISTRO=$(cat /etc/os-release | grep PRETTY | cut -c 13-50)
 DIST=$(echo $DISTRO | sed 's/\// /' | cut -c 1-20)
 IP=$(awk '/32 host/ { print f } {f=$2}' /proc/net/fib_trie | sort | uniq | grep -v 127 | sed ':a; N; $!ba; s/\n/ /g')
 # NGINX_VERSION=$(/usr/sbin/nginx -v)
+# NGINX_ALPINE=$(apk info -q nginx  | grep nginx | head -q -c 15)
+# NGINX_DEBIAN=$(apt info nginx | grep Version)
 
 #ip a | grep inet |  grep -v 127 | cut -c 10-22 | tail -n 3 >> /tmp/IP
 #awk '/32 host/ { print f } {f=$2}' << < "$(</proc/net/fib_trie)" |  grep -v 127 | tail -n 3 >> /tmp/IP
