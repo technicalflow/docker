@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 from flask import Flask, request
-#import socket
-#import time
 
 application = Flask(__name__)
 

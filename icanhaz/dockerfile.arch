@@ -1,0 +1,10 @@
+FROM docker.io/library/archlinux:latest
+LABEL maintainer="marek@techfellow.it"
+
+RUN pacman -Sy --noconfirm python python-pip && pacman -Scc --noconfirm
+RUN pip install gunicorn flask
+COPY ipcheck.py /
+
+EXPOSE 80
+USER 1000
+CMD ["gunicorn", "--bind", "0.0.0.0:80", "ipcheck"]
