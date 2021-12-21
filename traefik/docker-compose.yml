@@ -3,8 +3,11 @@ version: '3'
 
 services:
   web:
-    image: techfellow/webappa:arm7alpine
-    container_name: webappa
+    image: techfellow/webappa:armv7alpine
+    # container_name: webappa
+    deploy:
+      replicas: 4
+    mem_limit: 8m
     environment:
       - TZ=Europe/Warsaw
     networks:
@@ -20,6 +23,7 @@ services:
   traefik:
     image: "traefik:v2.5"
     container_name: "traefik"
+    mem_limit: 64m
     networks:
       - ipnet
     labels:
