@@ -1,0 +1,42 @@
+---
+version: '3'
+
+services:
+  web:
+    image: techfellow/webappa:arm7alpine
+    container_name: webappa
+    environment:
+      - TZ=Europe/Warsaw
+    networks:
+      - ipnet
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ipcheck.entrypoints=web"
+      - "traefik.http.routers.ipcheck.rule=Host(`weblb.local`)"
+#      - "traefik.frontend.whiteList.useXForwardedFor=true"
+#      - "traefik.frontend.rule=Host(`weblb.local`)"
+    restart: always
+
+  traefik:
+    image: "traefik:v2.5"
+    container_name: "traefik"
+    networks:
+      - ipnet
+    labels:
+      - "traefik.docker.network=ipnet"
+    ports:
+      - "80:80"
+      - "443:443"
+      # - "8080:8080"  # (Optional) Expose Dashboard
+    volumes:
+      - ./configuration:/etc/traefik
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+networks:
+  ipnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.25.0/29
+          gateway: 172.25.25.1
+          
