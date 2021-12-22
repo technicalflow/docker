@@ -24,6 +24,8 @@ services:
     image: "traefik:v2.5"
     container_name: "traefik"
     mem_limit: 64m
+    depends_on:
+      - web
     networks:
       - ipnet
     labels:

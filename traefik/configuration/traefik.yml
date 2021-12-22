@@ -1,5 +1,5 @@
 global:
-  checkNewVersion: true
+  checkNewVersion: false
   sendAnonymousUsage: false  # true by default
 
 # (Optional) Log information
@@ -26,7 +26,7 @@ api:
 entryPoints:
   web:
     address: ":80"
-   forwardedHeaders:
+    forwardedHeaders:
      trustedIPs:
        - "127.0.0.1/32" # localhost
        - "172.25.25.0/29"
