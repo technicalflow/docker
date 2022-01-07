@@ -1,0 +1,35 @@
+version: "3.3"
+services:
+  website:
+    image: techfellow/httpdapp:armv7
+    networks:
+      - website
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      TZ: 'Europe/Warsaw'
+    deploy:
+      # labels:
+      #   servicename: website
+      replicas: 6
+      mode: replicated
+      # endpoint_mode: dnsrr
+      # placement:
+#        constraints: [node.role == manager]
+        # preferences: 
+        #   - spread: node.labels.dsw1
+      update_config:
+        delay: 1S
+        order: start-first
+        parallelism: 2
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '1'
+          memory: 32M
+
+networks:
+  website:

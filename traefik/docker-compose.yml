@@ -3,7 +3,7 @@ version: '3'
 
 services:
   web:
-    image: techfellow/webappa:armv7alpine
+    image: techfellow/webappa
     # container_name: webappa
     deploy:
       replicas: 4
