@@ -1,9 +1,9 @@
 #App image
-FROM httpd:latest
+FROM httpd:2.4
 LABEL maintainer="marek@techfellow.it"
 
 COPY my-entrypoint.sh /
-#HEALTHCHECK --interval=1m --timeout=5s CMD curl -f http://localhost/ || exit 1
+HEALTHCHECK --interval=1m --timeout=5s CMD curl -f http://localhost/ || exit 1
 
 WORKDIR  /usr/local/apache2/htdocs
 

@@ -2,17 +2,30 @@
 version: "3"
 
 services:
-  website:
+  httpdapp:
 #    build: .
-    image: techfellow/httpdapp
-    container_name: website
+    image: techfellow/httpdapp:latest
+    container_name: httpdapp
     mem_limit: 32m
     ports:
       - "8080:80"
-      - "8443:443"
+#      - "8443:443"
     environment:
       TZ: 'Europe/Warsaw'
 
     restart: unless-stopped
 #    deploy:
 #      replicas: 5
+
+  httpdappa:
+#    build: .
+    image: techfellow/httpdapp:alpine
+    container_name: httpdappa
+    mem_limit: 32m
+    ports:
+      - "9080:80"
+#      - "8443:443"
+    environment:
+      TZ: 'Europe/Warsaw'
+
+    restart: unless-stopped

@@ -36,7 +36,7 @@ sed -i 's/<h2>Hostname:.*/<h2>Hostname: '"$HOSTNAME"'<\/h2> /' /usr/local/apache
 sed -i 's/<h2>Distribution:.*/<h2>Distribution: '"$DIST"'<\/h2> /' /usr/local/apache2/htdocs/index.html
 sed -i 's/<h2>Container IP:.*/<h2>Container IP: '"$IP"'<\/h2> /' /usr/local/apache2/htdocs/index.html
 
-echo "ServerName 127.0.0.1" >> /usr/local/apache2/htdocs/conf/httpd.conf
+echo "ServerName 127.0.0.1" >> /usr/local/apache2/conf/httpd.conf
 
 # echo DONE
 exec "$@"
