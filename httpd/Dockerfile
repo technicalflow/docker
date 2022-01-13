@@ -1,5 +1,5 @@
 #App image
-FROM httpd:2.4
+FROM httpd:alpine
 LABEL maintainer="marek@techfellow.it"
 
 COPY my-entrypoint.sh /

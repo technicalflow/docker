@@ -8,7 +8,7 @@ services:
     container_name: httpdapp
     mem_limit: 32m
     ports:
-      - "8080:80"
+      - "8082:80"
 #      - "8443:443"
     environment:
       TZ: 'Europe/Warsaw'
@@ -23,7 +23,7 @@ services:
     container_name: httpdappa
     mem_limit: 32m
     ports:
-      - "9080:80"
+      - "8083:80"
 #      - "8443:443"
     environment:
       TZ: 'Europe/Warsaw'

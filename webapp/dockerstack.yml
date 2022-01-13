@@ -5,8 +5,8 @@ services:
     networks:
       - website
     ports:
-      - "80:80"
-      - "443:443"
+      - "8085:80"
+#      - "443:443"
     environment:
       TZ: 'Europe/Warsaw'
       NGINX_HOST: web.local
@@ -28,8 +28,8 @@ services:
         # preferences: 
         #   - spread: node.labels.dsw1
       update_config:
-        delay: 1S
-        order: start-first
+        delay: 1s
+#        order: start-first
         parallelism: 2
       restart_policy:
         condition: on-failure
