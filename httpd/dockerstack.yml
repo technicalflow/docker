@@ -1,7 +1,7 @@
-version: "3.3"
+version: "3.6"
 services:
   website:
-    image: techfellow/httpdapp:armv7
+    image: techfellow/httpdapp:latest
     networks:
       - website
     ports:
@@ -21,7 +21,7 @@ services:
         #   - spread: node.labels.dsw1
       update_config:
         delay: 1s
-        order: start-first
+#        order: start-first
         parallelism: 2
       restart_policy:
         condition: on-failure
