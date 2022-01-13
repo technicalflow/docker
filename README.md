@@ -35,4 +35,5 @@ Most of the working images can be found on https://hub.docker.com/u/techfellow
 ### unifi
     Unifi controller docker compose file
 ### webapp
-    Website to show Docker Stack load balancing capabilities in Docker Swarm mode. Two options - as a debian or alpine edition.
+    Website to show Docker Stack load balancing capabilities in Docker Swarm mode.
+    Two options - as a debian or alpine edition.
