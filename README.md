@@ -1,5 +1,5 @@
 # My docker test environment
-Most of the photos can be found on https://hub.docker.com/u/techfellow
+Most of the working images can be found on https://hub.docker.com/u/techfellow
 ### centosssh
     This container doesn't do anything except run the sshd daemon.
     It can be used as an isolated environment accessed remotely to retrieve or drop files for archival.
