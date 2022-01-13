@@ -12,7 +12,6 @@ EXPOSE 80
 ENTRYPOINT ["/my-entrypoint.sh"]
 
 RUN chown -R nginx:nginx /usr/share/nginx/html/
-# RUN sh /docker-entrypoint.sh
 
 #STOPSIGNAL SIGQUIT
 
