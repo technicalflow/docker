@@ -84,6 +84,8 @@ echo "vsadmin ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/vsadmin
 chown -R vsadmin:vsadmin /config
 chown -R vsadmin:vsadmin /home/vsadmin
 
+mkdir -p /config/data/User/
+touch /config/data/User/settings.json
 cat << EOFsettings > /config/data/User/settings.json 
 {
     "workbench.colorTheme": "Visual Studio Dark",
