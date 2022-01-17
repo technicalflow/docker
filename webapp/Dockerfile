@@ -2,7 +2,6 @@
 FROM nginx:latest
 LABEL maintainer="marek@techfellow.it"
 
-# RUN apt update && apt upgrade -y
 # COPY website/index.html /usr/share/nginx/html
 COPY my-entrypoint.sh /
 

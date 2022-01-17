@@ -9,13 +9,10 @@ services:
     mem_limit: 32m
     ports:
       - "8082:80"
-#      - "8443:443"
     environment:
       TZ: 'Europe/Warsaw'
-
+      
     restart: unless-stopped
-#    deploy:
-#      replicas: 5
 
   httpdappa:
 #    build: .
@@ -24,7 +21,6 @@ services:
     mem_limit: 32m
     ports:
       - "8083:80"
-#      - "8443:443"
     environment:
       TZ: 'Europe/Warsaw'
 

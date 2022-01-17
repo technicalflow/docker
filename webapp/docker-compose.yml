@@ -8,7 +8,6 @@ services:
     container_name: website
     ports:
       - "80:80"
-      - "443:443"
     environment:
       TZ: 'Europe/Warsaw'
       NGINX_HOST: web.local
@@ -17,6 +16,5 @@ services:
 #    volumes:
 #      - './website:/var/www/html'
 #      - './website:/usr/share/nginx/html/'
-    restart: always
-#    deploy:
-#      replicas: 5
+    restart: on-failure
+

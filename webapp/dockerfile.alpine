@@ -14,7 +14,6 @@ ENTRYPOINT ["/my-entrypoint.sh"]
 RUN chown -R nginx:nginx /usr/share/nginx/html/
 
 #STOPSIGNAL SIGQUIT
-
 #USER nginx
 
 CMD ["nginx", "-g", "daemon off;"]
