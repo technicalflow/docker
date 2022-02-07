@@ -1,3 +1,4 @@
+# Works only on x86_64
 FROM docker.io/library/archlinux:latest
 LABEL maintainer="marek@techfellow.it"
 

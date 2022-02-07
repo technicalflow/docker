@@ -24,6 +24,11 @@ cat << EOFhtml > /usr/share/nginx/html/index.html
 </body></html>
 EOFhtml
 
+mkdir -p /usr/share/nginx/html/host
+cat << EOFhost > /usr/share/nginx/html/host/index.html
+<h2>Hostname: </h2>
+EOFhost
+
 HOSTNAME=$(cat /etc/hostname)
 DISTRO=$(cat /etc/os-release | grep PRETTY | cut -c 13-50)
 DIST=$(echo $DISTRO | sed 's/\// /' | cut -c 1-20)
@@ -41,5 +46,6 @@ sed -i 's/<h2>Distribution:.*/<h2>Distribution: '"$DIST"'<\/h2> /' /usr/share/ng
 # sed -i 's/<h2>Nginx Version:.*/<h2>Nginx Version: '"$NGINX_ALPINE"'<\/h2> /' /usr/share/nginx/html/index.html
 sed -i 's/<h2>Container IP:.*/<h2>Container IP: '"$IP"'<\/h2> /' /usr/share/nginx/html/index.html
 
+sed -i 's/<h2>Hostname:.*/<h2>Hostname: '"$HOSTNAME"'<\/h2> /' /usr/share/nginx/html/host/index.html
 # echo DONE
 exec "$@"
