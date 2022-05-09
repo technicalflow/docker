@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+   wpdb2022:
+     image: mysql:5.7
+     volumes:
+       - ./db_data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: somewordpress
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpressmadmin2022
+       MYSQL_PASSWORD: wordpresspass2022
+       TZ: Europe/Warsaw
+
+   wordpress2022:
+     depends_on:
+       - wpdb2022
+     image: wordpress:latest
+     ports:
+       - "9080:80"
+       - "9443:443"
+     restart: always
+     environment:
+       WORDPRESS_DB_HOST: wpdb2022:3306
+       WORDPRESS_DB_USER: wordpressmadmin2022
+       WORDPRESS_DB_PASSWORD: wordpresspass2022
+       TZ: Europe/Warsaw

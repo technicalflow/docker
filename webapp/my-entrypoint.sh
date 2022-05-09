@@ -17,7 +17,7 @@ cat << EOFhtml > /usr/share/nginx/html/index.html
 </style></head>
 <body>
 <h2>Hello World !</h2>
-<img style="padding: 20px;" src="https://www.docker.com/sites/default/files/social/docker_facebook_share.png" alt="Blue container"><br>
+<img style="padding: 20px;" src="https://www.docker.com/wp-content/uploads/2021/09/Moby-share-900x551.png.webp" alt="Blue container"><br>
 <h2>Hostname: </h2>
 <h2>Distribution: </h2>
 <h2>Container IP: </h2><br>
