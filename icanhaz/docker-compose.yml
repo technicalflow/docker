@@ -6,7 +6,7 @@ services:
 #    build: .
     image: techfellow/ipcheck:latest
     container_name: ipcheck
-    mem_limit: 128m
+#    mem_limit: 128m
     ports:
       - "80:80"
 #      - "8443:443"
@@ -20,23 +20,9 @@ services:
     container_name: ipchecku
     environment:
       TZ: 'Europe/Warsaw'
-    mem_limit: 128m
+#    mem_limit: 128m
     ports:
       - 8080:80
 
     restart: unless-stopped
-
-#    deploy:
-#      replicas: 2
-
-#     mac_address: 02:42:c0:a8:32:f9
-
-#     networks:
-#       default:
-#         ipv4_address: 192.168.50.241
-
-# networks:
-#   default:
-# #    external:
-#     name: macvlan
 

@@ -1,12 +1,12 @@
 # Copyright (c) Microsoft Corporation. 
 # Licensed under the MIT License.
 
-ARG fromTag=bionic
+ARG fromTag=focal
 ARG imageRepo=ubuntu
 
 FROM ${imageRepo}:${fromTag} AS installer-env
 
-ARG PS_VERSION=7.2.0
+ARG PS_VERSION=7.2.5
 ENV PS_PACKAGE=powershell-${PS_VERSION}-linux-x64.tar.gz
 ENV PS_PACKAGE_URL=https://github.com/PowerShell/PowerShell/releases/download/v${PS_VERSION}/${PS_PACKAGE}
 ARG PS_INSTALL_VERSION=7-lts
@@ -43,7 +43,7 @@ FROM ${imageRepo}:${fromTag} AS final-image
 
 # Define Args and Env needed to create links
 ARG PS_INSTALL_VERSION=7-lts
-ARG PS_VERSION=7.2.0
+ARG PS_VERSION=7.2.5
 
 ENV PS_INSTALL_FOLDER=/opt/microsoft/powershell/$PS_INSTALL_VERSION \
     # Define ENVs for Localization/Globalization
@@ -54,14 +54,15 @@ ENV PS_INSTALL_FOLDER=/opt/microsoft/powershell/$PS_INSTALL_VERSION \
     LC_ALL=en_US.UTF-8 \
     # set a fixed location for the Module analysis cache
     PSModuleAnalysisCachePath=/var/cache/microsoft/powershell/PSModuleAnalysisCache/ModuleAnalysisCache \
-    POWERSHELL_DISTRIBUTION_CHANNEL=PSDocker-x64-Ubuntu-18.04
+    POWERSHELL_DISTRIBUTION_CHANNEL=PSDocker-x64-Ubuntu-18.04 \
+    DEBIAN_FRONTEND=noninteractive
 
 # Copy only the files we need from the previous stage
 COPY --from=installer-env ["/opt/microsoft/powershell", "/opt/microsoft/powershell"]
 
 RUN \
   apt-get update \
-  && apt-get install ca-certificates curl nano git net-tools iputil* wget gnupg libunwind8 libssl1.0 libicu60 less --yes
+  && apt-get install ca-certificates curl nano git net-tools iputil* wget gnupg libunwind8 libicu-dev libssl1.0 less --yes
 
     # Give all user execute permissions and remove write permissions for others
 RUN chmod a+x,o-w ${PS_INSTALL_FOLDER}/pwsh \
@@ -71,7 +72,7 @@ RUN chmod a+x,o-w ${PS_INSTALL_FOLDER}/pwsh \
     && ln -s ${PS_INSTALL_FOLDER}/pwsh /usr/bin/pwsh-lts
 
 RUN pwsh -command 'update-module'
-RUN pwsh -command 'Install-module Az -Force'
+#RUN pwsh -command 'Install-module Az -Force'
 
 # Use PowerShell as the default shell
 # Use array to avoid Docker prepending /bin/sh -c
