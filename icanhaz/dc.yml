@@ -1,0 +1,29 @@
+---
+version: "3.3"
+
+services:
+  ipcheck:
+#    build: .
+    image: techfellow/ipcheck:latest
+    container_name: ipcheck
+    mem_limit: 128m
+    ports:
+      - "80:80"
+    environment:
+      TZ: 'Europe/Warsaw'
+
+    restart: unless-stopped
+
+  ipcheckhttps:
+    image: techfellow/ipcheck:https
+    container_name: ipcheckhttps
+    environment:
+      TZ: 'Europe/Warsaw'
+    mem_limit: 128m
+    ports:
+      - 443:443
+
+    volumes:
+      - /opt/cert:/opt:ro
+
+    restart: unless-stopped
