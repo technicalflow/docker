@@ -14,7 +14,7 @@ services:
       - TZ=Europe/Warsaw
       - HOSTNAME=col
     volumes:
-      - ./config:/config
+      - colvol:/config
 #      - ./lab:/config/lab
 
     restart: unless-stopped
@@ -23,11 +23,12 @@ services:
 
 #     networks:
 #       default:
-#         ipv4_address: 192.168.50.240
+#         ipv4_address: 192.168.30.240
 
 # networks:
 #   default:
-# #    external:
+#    external:
 #     name: macvlan
 
-
+volumes:
+  colvol:
