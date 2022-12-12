@@ -1,9 +1,6 @@
-## My version of linuxserver VS Code Server for web
-Now script.sh file recognizes x86_64 or armv7 processor and apply arguments appropriately. <br>
+# My version of linuxserver VS Code Server for web
+`` Now script.sh file recognizes x86_64 or armv7 processor and apply arguments appropriately. `` <br><br>
 
-<strike>Docker will build by default image for AMD64  architecture <br>
-To run docker build on ARM v7 run 'docker build -t codeonlan --build-arg "ARCH=/scriptarm.sh" . ' <br>
-or change in dockerfile parameter to 'ARG ARCH=/scriptarm.sh' <br></strike>
 
 Script will change default user from abc to vsadmin and install powershell, docker client, terraform, Azure Cli (only on x86_64 architecture)<br>
 

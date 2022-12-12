@@ -1,0 +1,12 @@
+#!/usr/bin/with-contenv bash
+
+exec \
+    s6-notifyoncheck -d -n 300 -w 1000 -c "nc -z 127.0.0.1 80" \
+        s6-setuidgid vsadmin \
+            /app/code-server/bin/code-server \
+                --bind-addr 0.0.0.0:80 \
+                --user-data-dir /config/data \
+                --extensions-dir /config/extensions \
+                --disable-telemetry \
+                --auth "password" \
+                /home/vsadmin

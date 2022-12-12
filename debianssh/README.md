@@ -4,7 +4,7 @@ This container doesn't do anything except run the sshd daemon. It can be used as
 
 ## Configuration
   - 3MB Ram docker ssh image
-  - sshadmin is default admin account
+  - *sshadmin* is default admin account
   - sudo is enabled without password authentication
   - Place public key in the container when its built or volume-mount directory with public key in it.
   - Listens to default port 22, but you can use a different port by editing /etc/ssh/sshd_config

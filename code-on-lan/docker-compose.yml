@@ -2,7 +2,8 @@
 version: "3.6"
 services:
   col:
-    build: .
+    # build: .
+    image: techfellow/col
     container_name: col
     hostname: col
     ports:

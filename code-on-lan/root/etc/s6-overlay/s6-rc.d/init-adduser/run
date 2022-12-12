@@ -19,5 +19,6 @@ User uid:    $(id -u vsadmin)
 User gid:    $(id -g vsadmin)
 -------------------------------------
 "
-#chown vsadmin:vsadmin /config
-#chown vsadmin:vsadmin /home/vsadmin
+chown -R vsadmin:vsadmin /app
+chown -R vsadmin:vsadmin /config
+chown -R vsadmin:vsadmin /home/vsadmin

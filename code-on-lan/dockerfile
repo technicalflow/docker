@@ -1,4 +1,4 @@
-FROM linuxserver/code-server
+FROM linuxserver/code-server:4.9.0
 ARG ARCH=/script.sh
 
 # set version label
