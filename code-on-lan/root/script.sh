@@ -12,7 +12,7 @@ USER=vsadmin
 echo 'Install script for code on lan environment'
 
 export DEBIAN_FRONTEND=noninteractive
-export HOME="/home/vsadmin"
+export HOME="/home/$USER"
 
 echo "Europe/Warsaw" > /etc/timezone
 
