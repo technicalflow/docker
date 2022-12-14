@@ -8,7 +8,8 @@ services:
     mem_limit: 8m
     environment:
       - TZ=Europe/Warsaw
-
+      - PUID=1000
+      - PGID=1000
     restart: always
 
     networks:
@@ -34,6 +35,8 @@ services:
     restart: always
     environment:
       - TZ=Europe/Warsaw
+      - PUID=1000
+      - PGID=1000
     volumes:
       - ./:/usr/local/etc/haproxy/
 

@@ -13,14 +13,13 @@ services:
       - TZ=Europe/Warsaw
     volumes:
       - './config:/config'
-      
+      # - configvol:/config //volume
     restart: unless-stopped
 
 
 #     networks:
 #       default:
-#           ipv4_address: 192.168.50.245
-
+#           ipv4_address: 192.168.30.245
 
 # networks:
 #   default:
@@ -28,4 +27,7 @@ services:
 #       name: macvlan
 #     ipam:
 #       config:
-#         - subnet: 192.168.50.240/29
+#         - subnet: 192.168.30.240/29
+
+# volumes:
+#   configvol:

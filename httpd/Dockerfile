@@ -1,6 +1,6 @@
 #App image
 FROM httpd:alpine
-LABEL maintainer="marek@techfellow.it"
+LABEL maintainer="Marek from mysmall.cloud"
 
 COPY my-entrypoint.sh /
 HEALTHCHECK --interval=1m --timeout=5s CMD curl -f http://localhost/ || exit 1
