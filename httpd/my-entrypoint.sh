@@ -16,12 +16,17 @@ cat << EOFhtml > /usr/local/apache2/htdocs/index.html
 </style></head>
 <body>
 <h2>Hello World !</h2>
-<img style="padding: 20px;" src="../Docker.png" alt="Blue container"><br>
+<img style="padding: 20px;" src="https://github.com/technicalflow/docker/raw/master/Docker.png" alt="Blue container"><br>
 <h2>Hostname: </h2>
 <h2>Distribution: </h2>
 <h2>Container IP: </h2><br>
 </body></html>
 EOFhtml
+
+cat << EOFhtmlq > /usr/local/apache2/htdocs/q/index.html
+Hostname:
+EOFhtmlq
+
 
 HOSTNAME=$(cat /etc/hostname)
 DISTRO=$(cat /etc/os-release | grep PRETTY | cut -c 13-50)
@@ -35,6 +40,8 @@ IP=$(awk '/32 host/ { print f } {f=$2}' /proc/net/fib_trie | sort | uniq | grep 
 sed -i 's/<h2>Hostname:.*/<h2>Hostname: '"$HOSTNAME"'<\/h2> /' /usr/local/apache2/htdocs/index.html
 sed -i 's/<h2>Distribution:.*/<h2>Distribution: '"$DIST"'<\/h2> /' /usr/local/apache2/htdocs/index.html
 sed -i 's/<h2>Container IP:.*/<h2>Container IP: '"$IP"'<\/h2> /' /usr/local/apache2/htdocs/index.html
+
+sed -i 's/Hostname:.*/Hostname: '"$HOSTNAME"' /' /usr/local/apache2/htdocs/q/index.html
 
 # echo "ServerName 127.0.0.1" >> /usr/local/apache2/conf/httpd.conf
 
