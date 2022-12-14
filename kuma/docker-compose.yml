@@ -13,15 +13,15 @@ services:
       - 80:3001
 
     environment:
-#      - PUID=1000
-#      - PGID=1000
+      - PUID=1000
+      - PGID=1000
       - TZ=Europe/Warsaw
 
     restart: unless-stopped
 
 #    networks:
 #      default:
-#        ipv4_address: 192.168.50.243
+#        ipv4_address: 192.168.30.243
 
 #networks:
 #  default:
