@@ -1,12 +1,15 @@
-## Sample website to show Docker Stack load balancing capabilities in Docker Swarm mode
+## Sample website to show Docker Stack or Docker Compose load balancing capabilities in Docker Swarm mode
 #
 
-<!-- Container is running in user mode <br> -->
+For a container image in user mode go with this image: 
+https://github.com/technicalflow/docker/tree/master/httpd
+<br>
 
+To build an image and run a container
 ``docker build -t website . ``<br>
 ``docker run -d -p 80:80 website``<br>
 or<br>
-``docker stack deploy -c dockerstack.yml website ``<br>
+``docker stack deploy -c dockerstack.yml website ``<br><br>
 
 New option to check only Hostname or IP with curl 
 
