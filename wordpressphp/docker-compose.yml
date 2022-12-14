@@ -22,9 +22,11 @@ services:
     depends_on:
       - db
     image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    mem_limit: 128m
     restart: always
     ports:
-      - '8091:80'
+      - '8090:80'
     environment:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: password
@@ -37,9 +39,9 @@ services:
       - db
     image: wordpress:latest
     container_name: wp
-    mem_limit: 256m
+    mem_limit: 512m
     ports:
-       - '8090:80'
+       - '80:80'
     restart: always
     volumes:
       - wordpress:/var/www/html

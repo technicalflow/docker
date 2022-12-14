@@ -4,7 +4,8 @@ services:
    wpdb2022:
      image: mysql:5.7
      volumes:
-       - ./db_data:/var/lib/mysql
+       - ./dbconfig:/var/lib/mysql
+
      restart: always
      environment:
        MYSQL_ROOT_PASSWORD: somewordpress
@@ -18,8 +19,9 @@ services:
        - wpdb2022
      image: wordpress:latest
      ports:
-       - "9080:80"
-       - "9443:443"
+       - "80:80"
+       - "443:443"
+
      restart: always
      environment:
        WORDPRESS_DB_HOST: wpdb2022:3306
