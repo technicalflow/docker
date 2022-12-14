@@ -1,6 +1,6 @@
 #App image
 FROM nginx:stable-alpine
-LABEL maintainer="marek@techfellow.it"
+LABEL maintainer="Marek from mysmall.cloud"
 
 #COPY website/index.html /usr/share/nginx/html
 COPY my-entrypoint.sh /
@@ -9,9 +9,9 @@ HEALTHCHECK --interval=1m --timeout=5s CMD curl -f http://localhost/ || exit 1
 WORKDIR  /usr/share/nginx/html
 
 EXPOSE 80
-ENTRYPOINT ["/my-entrypoint.sh"]
+# RUN chown -R nginx:nginx /usr/share/nginx/html/
 
-RUN chown -R nginx:nginx /usr/share/nginx/html/
+ENTRYPOINT ["/my-entrypoint.sh"]
 
 #STOPSIGNAL SIGQUIT
 #USER nginx

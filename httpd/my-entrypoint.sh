@@ -23,10 +23,15 @@ cat << EOFhtml > /usr/local/apache2/htdocs/index.html
 </body></html>
 EOFhtml
 
-cat << EOFhtmlq > /usr/local/apache2/htdocs/q/index.html
+mkdir -p /usr/local/apache2/htdocs/host
+cat << EOFhtmlhost > /usr/local/apache2/htdocs/host/index.html
 Hostname:
-EOFhtmlq
+EOFhtmlhost
 
+mkdir -p /usr/local/apache2/htdocs/ip
+cat << EOFip > /usr/local/apache2/htdocs/ip/index.html
+IP:
+EOFip
 
 HOSTNAME=$(cat /etc/hostname)
 DISTRO=$(cat /etc/os-release | grep PRETTY | cut -c 13-50)
@@ -41,7 +46,9 @@ sed -i 's/<h2>Hostname:.*/<h2>Hostname: '"$HOSTNAME"'<\/h2> /' /usr/local/apache
 sed -i 's/<h2>Distribution:.*/<h2>Distribution: '"$DIST"'<\/h2> /' /usr/local/apache2/htdocs/index.html
 sed -i 's/<h2>Container IP:.*/<h2>Container IP: '"$IP"'<\/h2> /' /usr/local/apache2/htdocs/index.html
 
-sed -i 's/Hostname:.*/Hostname: '"$HOSTNAME"' /' /usr/local/apache2/htdocs/q/index.html
+sed -i 's/Hostname:.*/Hostname: '"$HOSTNAME"' /' /usr/local/apache2/htdocs/host/index.html
+
+sed -i 's/IP:.*/IP: '"$IP"' /' /usr/local/apache2/htdocs/ip/index.html
 
 # echo "ServerName 127.0.0.1" >> /usr/local/apache2/conf/httpd.conf
 

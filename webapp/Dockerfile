@@ -1,6 +1,6 @@
 #App image
 FROM nginx:latest
-LABEL maintainer="marek@techfellow.it"
+LABEL maintainer="Marek from mysmall.cloud"
 
 # COPY website/index.html /usr/share/nginx/html
 COPY my-entrypoint.sh /
