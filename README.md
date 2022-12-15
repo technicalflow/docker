@@ -14,9 +14,8 @@ Most of the working images can be found on https://hub.docker.com/u/techfellow
     Require Docker-compose version 2.
 ### heimdall
     Docker compose file for heimdall link landing page
-
 ### httpd
-    Simple website based on httpd to show Docker Stack load balancing capabilities in Docker Swarm mode. More inside a folder
+    Simple website based on httpd to show Docker load balancing capabilities in Docker Swarm mode.
 ### icanhaz
     My dockerfile version of popular icanhazip.com website to show source IP address.
 ### kuma
