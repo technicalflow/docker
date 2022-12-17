@@ -16,3 +16,5 @@ if you need to change shell password run: <b> docker exec -it col passwd vsadmin
 
 ### Currently the AZ Cli installation is stopped for ARM environment.
 ### Size of build image is around 1.5GB for ARM and 2.7GB for x86 system.
+
+Tested on 17.12.2022

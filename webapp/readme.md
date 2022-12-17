@@ -20,6 +20,7 @@ New option to check only Hostname or IP with curl
 ``$ curl -s localhost/host/ ``
 
 ``Hostname: 64f30d9a9878 ``
-<br>
+<br><br>
+Tested on 17.12.2022
 <br>
 <img src=./static/image.png>

@@ -4,7 +4,7 @@ set -e
 
 PLATFORM=linux
 HW=$(uname -m)
-PS_VERSION=7.3.0
+PS_VERSION=7.3.1
 DOCKER_VERSION=20.10.21
 TF_VERSION=1.3.6
 USER=vsadmin
@@ -17,8 +17,7 @@ export HOME="/home/$USER"
 echo "Europe/Warsaw" > /etc/timezone
 
 echo "**** update ****" 
-apt-get update
-apt-get upgrade -y
+apt-get update && apt-get upgrade -y
 apt-get install mc tmux htop mtr-tiny nano wget iputil* net-tools nmap unzip dialog -y
 apt-get install ca-certificates curl apt-transport-https lsb-release gnupg libssl-dev libffi-dev python3-dev build-essential git libunwind8 less tzdata ansible libicu70 -y
 
@@ -80,11 +79,9 @@ rm -rf /defaults
 
 echo "**** Creating User ****"
 mkdir -p /home/$USER && \
-useradd -d /home/$USER -s /bin/bash $USER && \
-usermod -aG users,sudo $USER && \
+useradd -d /home/$USER -G users,sudo -s /bin/bash $USER 
 echo $USER "ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$USER
 chown -R $USER:$USER /config
-chown -R $USER:$USER /home/$USER
 
 mkdir -p /config/data/User/
 touch /config/data/User/settings.json

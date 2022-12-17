@@ -6,7 +6,7 @@ services:
     container_name: col
     hostname: col
     ports:
-      - "8080:80"
+      - "80:80"
     mem_limit: 512m
     environment:
       - PUID=1000
