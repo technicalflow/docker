@@ -1,5 +1,5 @@
-FROM debian:10
-LABEL maintainer="marek@techfellow.it"
+FROM debian:11
+LABEL MAINTAINER 'marek from mysmall.cloud'
 
 RUN apt-get update -qq && apt-get install -y --no-install-recommends python3 python3-wheel python3-pip curl
 RUN pip3 install gunicorn && pip3 install flask
