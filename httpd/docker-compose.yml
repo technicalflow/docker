@@ -4,7 +4,7 @@ version: "3.6"
 services:
   httpdapp:
 #    build: .
-    image: techfellow/httpdapp:latest
+    image: techfellow/httpdappa
     container_name: httpdapp
     mem_limit: 32m
     ports:
@@ -16,7 +16,7 @@ services:
 
   httpdappa:
 #    build: .
-    image: techfellow/httpdapp:alpine
+    image: techfellow/httpdappa
     container_name: httpdappa
     mem_limit: 32m
     ports:
