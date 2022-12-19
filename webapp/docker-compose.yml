@@ -4,7 +4,7 @@ version: "3"
 services:
   website:
     build: .
-    # image: techfellow/webappa:alpine
+    # image: techfellow/webappa
     container_name: website
     ports:
       - "80:80"
@@ -17,4 +17,4 @@ services:
 #      - './website:/var/www/html'
 #      - './website:/usr/share/nginx/html/'
     restart: on-failure
-
+    
