@@ -1,11 +1,11 @@
 version: "3.6"
 services:
   website:
-    image: techfellow/httpdapp:latest
+    image: techfellow/httpdappa
     networks:
       - website
     ports:
-      - "8087:80"
+      - "8081:80"
  #     - "443:443"
     environment:
       TZ: 'Europe/Warsaw'
