@@ -19,4 +19,4 @@ New option to check only Hostname or IP with curl
 ``Hostname: 64f30d9a9878 ``
 <br>
 
-Tested on 17.12.2022
+Tested on 17.12.2022 and 10.2023

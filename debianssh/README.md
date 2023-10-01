@@ -23,4 +23,4 @@ Volume-mount public SSH key:
 $ docker run -d -p 2022:22 -v /home/user/.ssh:/home/sshadmin/.ssh techfellow/debianssh
 ```
 
-Tested on 17.12.2022
+Tested on 17.12.2022 and 10.2023
