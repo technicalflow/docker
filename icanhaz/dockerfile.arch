@@ -1,11 +1,12 @@
 # Works only on x86_64
-FROM docker.io/library/archlinux:latest
-LABEL maintainer="marek@techfellow.it"
+# FROM docker.io/library/archlinux:latest
+# LABEL maintainer="marek@techfellow.it"
 
-RUN pacman -Sy --noconfirm python python-pip && pacman -Scc --noconfirm
-RUN pip install gunicorn flask
-COPY ipcheck.py /
+# RUN pacman -Sy --noconfirm python python-pip python-pipx && pacman -Scc --noconfirm
+# RUN pipx install gunicorn && pipx install flask && pipx ensurepath
 
-EXPOSE 80
-USER 1000
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "ipcheck"]
+# COPY ipcheck.py /
+
+# EXPOSE 80
+# USER 1000
+# CMD ["/root/.local/bin/gunicorn", "--bind", "0.0.0.0:80", "ipcheck"]

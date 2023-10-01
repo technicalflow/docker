@@ -4,9 +4,9 @@ set -e
 
 PLATFORM=linux
 HW=$(uname -m)
-PS_VERSION=7.3.1
-DOCKER_VERSION=20.10.21
-TF_VERSION=1.3.6
+PS_VERSION=7.3.7
+DOCKER_VERSION=24.0.6
+TF_VERSION=1.5.7
 USER=vsadmin
 
 echo 'Install script for code on lan environment'
@@ -25,7 +25,7 @@ if [ "$HW" = "x86_64" ]; then
 echo 'Your architecture is x86_64'
 PS_ARCH=x64
 DOCKER_ARCH=x86_64
-TF_PACKAGE=terraform_1.3.6_linux_amd64.zip
+TF_PACKAGE=terraform_1.5.7_linux_amd64.zip
 
 echo "**** AZ CLI Installation ****"
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
@@ -35,7 +35,7 @@ else
 echo 'Your architecture is ARM'
 PS_ARCH=arm32
 DOCKER_ARCH=armhf
-TF_PACKAGE=terraform_1.3.6_linux_arm.zip
+TF_PACKAGE=terraform_1.5.7_linux_arm.zip
 #apt-get install -y libicu66
 
 else
