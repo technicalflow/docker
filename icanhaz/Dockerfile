@@ -1,8 +1,11 @@
-FROM debian:11
+FROM debian:12
 LABEL MAINTAINER 'marek from mysmall.cloud'
 
+ENV DEBIAN_FRONTEND=noninteractive \
+    TZ=Europe/Warsaw
+
 RUN apt-get update -qq && apt-get install -y --no-install-recommends python3 python3-wheel python3-pip curl
-RUN pip3 install gunicorn && pip3 install flask
+RUN pip3 install gunicorn flask --break-system-packages
 COPY ipcheck.py /
 
 HEALTHCHECK --interval=1m --timeout=5s CMD curl -f http://localhost/ || exit 1

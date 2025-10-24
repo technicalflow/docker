@@ -8,7 +8,7 @@ LABEL MAINTAINER 'marek from mysmall.cloud'
 ENV USER sshadmin
 
 # Update and install required packages
-RUN apt update && apt upgrade -y && apt install -y openssh-server rsync sudo dialog
+RUN apt-get update && apt-get upgrade -y && apt-get install -y openssh-server rsync sudo dialog
 # RUN yum -y update && yum -y install openssh-server rsync && yum clean all
 
 # Create needed SSH keys
@@ -27,7 +27,7 @@ RUN useradd -m $USER -s /bin/bash; mkdir -p /run/sshd
 
 # User option
 COPY key.pub /home/sshadmin/.ssh/authorized_keys
-RUN chmod -R 644 /etc/ssh/ssh_host_* && chown -R sshadmin:sshadmin /home/sshadmin/.ssh && echo $USER 'ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers.d/$USER
+RUN chmod -R 644 /etc/ssh/ssh_host_* && chown -R $USER:$USER /home/$USER/.ssh && echo $USER 'ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers.d/$USER
 
 EXPOSE 22
 # User option

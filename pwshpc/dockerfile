@@ -1,12 +1,12 @@
 # Copyright (c) Microsoft Corporation. 
 # Licensed under the MIT License.
 
-ARG fromTag=focal
+ARG fromTag=noble
 ARG imageRepo=ubuntu
 
 FROM ${imageRepo}:${fromTag} AS installer-env
 
-ARG PS_VERSION=7.3.7
+ARG PS_VERSION=7.5.3
 ENV PS_PACKAGE=powershell-${PS_VERSION}-linux-x64.tar.gz
 ENV PS_PACKAGE_URL=https://github.com/PowerShell/PowerShell/releases/download/v${PS_VERSION}/${PS_PACKAGE}
 ARG PS_INSTALL_VERSION=7-lts
