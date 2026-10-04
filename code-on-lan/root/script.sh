@@ -17,7 +17,7 @@ export HOME="/home/$USER"
 echo "**** Packages ****"
 apt-get update
 apt-get install -y mc tmux htop mtr-tiny nano wget iputil* net-tools nmap unzip dialog
-apt-get install -y --no-install-recommends ca-certificates curl apt-transport-https lsb-release gnupg libssl-dev libffi-dev python3-dev build-essential git libunwind8 less tzdata ansible-core
+apt-get install -y --no-install-recommends ca-certificates curl apt-transport-https lsb-release gnupg libssl-dev libffi-dev python3-dev build-essential git libunwind8 less tzdata ansible
 
 case "$(uname -m)" in
   x86_64)  PS_ARCH=x64;   DOCKER_ARCH=x86_64;  TF_ARCH=amd64 ;;

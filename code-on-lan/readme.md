@@ -1,5 +1,5 @@
 # My version of linuxserver VS Code Server for web
-`` Now script.sh file recognizes x86_64 or armv7 processor and apply arguments appropriately. `` <br><br>
+`` Now script.sh file recognizes x86_64 or arm64 processor and apply arguments appropriately. `` <br><br>
 
 
 Script will change default user from abc to madmin and install powershell, docker client, terraform, Azure Cli (only on x86_64 architecture)<br>

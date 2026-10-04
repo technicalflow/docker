@@ -1,6 +1,6 @@
 services:
   web:
-    image: nginx:latest
+    image: techfellow/ipcheck:latest
     networks:
       - lbnet
     environment:
@@ -8,7 +8,7 @@ services:
       - PUID=1000
       - PGID=1000
     deploy:
-      replicas: 4
+      replicas: 12
       endpoint_mode: dnsrr
       restart_policy:
         condition: any
@@ -23,10 +23,10 @@ services:
     ports:
       - target: 80
         published: 80
-        mode: ingress
+        mode: host # Direct bound to host port 80
       - target: 8404
         published: 8404
-        mode: ingress
+        mode: host # Direct bound to host port 8404
     configs:
       - source: haproxy_cfg
         target: /usr/local/etc/haproxy/haproxy.cfg
@@ -37,7 +37,7 @@ services:
       - PUID=1000
       - PGID=1000
     deploy:
-      replicas: 1
+      mode: global # Exactly 1 replica on each node and cannot scale more
       restart_policy:
         condition: any
       resources:

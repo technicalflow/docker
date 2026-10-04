@@ -1,9 +1,10 @@
 services:
   web:
     # build: .
-    image: ipcheck2
+    image: techfellow/ipcheck:latest
+    container_name: ipcheck
     deploy:
-      replicas: 4
+      replicas: 12
     mem_limit: 128m
     environment:
       - TZ=Europe/Warsaw

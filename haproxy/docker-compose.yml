@@ -1,8 +1,9 @@
 services:
   web:
-    image: nginx:latest
+    image: techfellow/webappa:latest
+    container_name: webappa
     deploy:
-      replicas: 4
+      replicas: 6
     mem_limit: 16m
     environment:
       - TZ=Europe/Warsaw

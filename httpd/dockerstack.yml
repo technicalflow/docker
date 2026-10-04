@@ -3,7 +3,7 @@ services:
     image: techfellow/httpdappa:latest
     ports:
       - target: 80
-        published: 8081
+        published: 80
         protocol: tcp
         mode: ingress
     environment:
