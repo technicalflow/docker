@@ -1,126 +1,110 @@
 #!/bin/sh
 
-set -e
+# set -eu
 
-PLATFORM=linux
-HW=$(uname -m)
-PS_VERSION=7.3.7
+PS_VERSION=7.6.6
 DOCKER_VERSION=24.0.6
-TF_VERSION=1.5.7
-USER=vsadmin
+TF_VERSION=1.16.5
+USER=madmin
+TMP=$(mktemp -d)
+HW=$(uname -m)
 
 echo 'Install script for code on lan environment'
 
 export DEBIAN_FRONTEND=noninteractive
 export HOME="/home/$USER"
 
-echo "Europe/Warsaw" > /etc/timezone
+echo "**** Packages ****"
+apt-get update
+apt-get install -y mc tmux htop mtr-tiny nano wget iputil* net-tools nmap unzip dialog
+apt-get install -y --no-install-recommends ca-certificates curl apt-transport-https lsb-release gnupg libssl-dev libffi-dev python3-dev build-essential git libunwind8 less tzdata ansible-core
 
-echo "**** update ****" 
-apt-get update && apt-get upgrade -y
-apt-get install mc tmux htop mtr-tiny nano wget iputil* net-tools nmap unzip dialog -y
-apt-get install ca-certificates curl apt-transport-https lsb-release gnupg libssl-dev libffi-dev python3-dev build-essential git libunwind8 less tzdata ansible libicu70 -y
-
-if [ "$HW" = "x86_64" ]; then
-echo 'Your architecture is x86_64'
-PS_ARCH=x64
-DOCKER_ARCH=x86_64
-TF_PACKAGE=terraform_1.5.7_linux_amd64.zip
+case "$(uname -m)" in
+  x86_64)  PS_ARCH=x64;   DOCKER_ARCH=x86_64;  TF_ARCH=amd64 ;;
+  aarch64) PS_ARCH=arm64; DOCKER_ARCH=aarch64; TF_ARCH=arm64 ;;
+  *) echo "Unsupported platform: $(uname -m)"; exit 1 ;;
+esac
+echo "Architecture: $(uname -m)"
 
 echo "**** AZ CLI Installation ****"
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+curl -fsSL https://aka.ms/InstallAzureCLIDeb | bash
 
-else
-    if [ "$HW" = "armv7l" ]; then
-echo 'Your architecture is ARM'
-PS_ARCH=arm32
-DOCKER_ARCH=armhf
-TF_PACKAGE=terraform_1.5.7_linux_arm.zip
-#apt-get install -y libicu66
-
-else
-  echo "Unsupported platform"
-fi
-fi
-echo "**** Installing Powershell ****" 
+echo "**** Installing Powershell ****"
 PS_PACKAGE=powershell-$PS_VERSION-linux-$PS_ARCH.tar.gz
-curl -fsSL https://github.com/PowerShell/PowerShell/releases/download/v$PS_VERSION/$PS_PACKAGE -o /config/$PS_PACKAGE
+curl -fsSL "https://github.com/PowerShell/PowerShell/releases/download/v$PS_VERSION/$PS_PACKAGE" -o "$TMP/$PS_PACKAGE"
 mkdir -p /usr/local/share/pwsh/
-tar -xzf /config/$PS_PACKAGE -C /usr/local/share/pwsh/
+tar -xzf "$TMP/$PS_PACKAGE" -C /usr/local/share/pwsh/
 chown -R root:root /usr/local/share/pwsh && chmod 755 /usr/local/share/pwsh/pwsh
 ln -s /usr/local/share/pwsh/pwsh /usr/bin/pwsh
-rm -rf /config/$PS_PACKAGE
 
-echo "**** Update Powershell Modules ****" 
+echo "**** Powershell Gallery ****"
 pwsh -command set-psrepository -name PSGallery -installationpolicy trusted
-pwsh -command update-module
 
 # echo "**** Installing Powershell AZ Module ****" 
 #pwsh -command install-module az -force
 
-echo "**** Installing Docker client ****" 
+echo "**** Installing Docker client ****"
 DOCKER_PACKAGE=docker-$DOCKER_VERSION.tgz
-curl -fsSL https://download.docker.com/linux/static/stable/$DOCKER_ARCH/$DOCKER_PACKAGE -o /config/$DOCKER_PACKAGE
-tar -xzf /config/$DOCKER_PACKAGE -C /usr/local/share/
+curl -fsSL "https://download.docker.com/linux/static/stable/$DOCKER_ARCH/$DOCKER_PACKAGE" -o "$TMP/$DOCKER_PACKAGE"
+tar -xzf "$TMP/$DOCKER_PACKAGE" -C /usr/local/share/
 ln -s /usr/local/share/docker/docker /usr/bin/docker
-rm -rf /config/$DOCKER_PACKAGE
 
-echo "**** Installing Terraform ****" 
-curl -fsSL https://releases.hashicorp.com/terraform/$TF_VERSION/$TF_PACKAGE -o /config/$TF_PACKAGE
-unzip /config/$TF_PACKAGE -d /usr/bin/
-rm -rf /config/$TF_PACKAGE
+echo "**** Installing Terraform ****"
+TF_PACKAGE=terraform_${TF_VERSION}_linux_${TF_ARCH}.zip
+curl -fsSL "https://releases.hashicorp.com/terraform/$TF_VERSION/$TF_PACKAGE" -o "$TMP/$TF_PACKAGE"
+unzip "$TMP/$TF_PACKAGE" terraform -d /usr/bin/
 
-echo "**** Cleanup ****" 
+echo "**** Cleanup ****"
 apt-get autoremove -y
 apt-get purge -y
 apt-get clean
+rm -rf /var/lib/apt/lists/* "$TMP" /defaults
 userdel abc
 rm -rf /defaults
 
 echo "**** Creating User ****"
-mkdir -p /home/$USER && \
-useradd -d /home/$USER -G users,sudo -s /bin/bash $USER 
-echo $USER "ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$USER
-chown -R $USER:$USER /config
+useradd -m -d "/home/$USER" -G users,sudo -s /bin/bash "$USER"
+echo "$USER ALL=(ALL) NOPASSWD:ALL" > "/etc/sudoers.d/$USER"
+chmod 440 "/etc/sudoers.d/$USER"
+chown -R "$USER:$USER" /config
 
 mkdir -p /config/data/User/
 touch /config/data/User/settings.json
 cat << EOFsettings > /config/data/User/settings.json 
 {
     "workbench.colorTheme": "Visual Studio Dark",
-    "terminal.integrated.gpuAcceleration": "off",
+    "terminal.integrated.gpuAcceleration": "off"
 }
 EOFsettings
 
-echo "**** Files ****" 
-touch /home/$USER/.bashrc
-echo "
+echo "**** Files ****"
+
+cat >> "/home/$USER/.bashrc" <<'EOF'
 HISTSIZE=2000
 HISTFILESIZE=2000
+PATH=$PATH:/usr/local/share/az
+PATH="$PATH:/usr/local/bin/"
 
 export EDITOR='nano'
-export PATH="$PATH:/usr/local/bin/"
-export PATH="/usr/local/git/bin:/sw/bin/:/usr/local/bin:/usr/local/:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
 
-export PATH=$PATH:/usr/local/share/az
-alias ttn='tmux attach -t new' " >> /home/$USER/.bashrc
+alias ttn='tmux attach -t new'
+EOF
 
-touch /home/$USER/.selected_editor
-cat << EOFnano > /home/$USER/.selected_editor
+cat > "/home/$USER/.selected_editor" <<'EOF'
 # Generated by /usr/bin/select-editor
 SELECTED_EDITOR="/bin/nano"
-EOFnano
+EOF
 
-mkdir -p /home/$USER/.config/code-server/
-touch /home/$USER/.config/code-server/config.yaml
-cat << EOFconfiguration > /home/$USER/.config/code-server/config.yaml
-bind-addr: 127.0.0.1:8080
+# TODO Step 4: remove this block and pass PASSWORD via .env instead
+mkdir -p "/home/$USER/.config/code-server/"
+cat > "/home/$USER/.config/code-server/config.yaml" <<'EOF'
+bind-addr: 0.0.0.0:80
 auth: password
 password: orange!
 cert: false
-EOFconfiguration
+EOF
 
-cat << EOFtmux > /home/$USER/.tmux.conf
+cat << 'EOFtmux' > "/home/$USER/.tmux.conf"
 unbind %
 bind | split-window -h
 bind - split-window -v
@@ -151,9 +135,7 @@ set -g terminal-overrides xterm*:smcup@:rmcup@
 # setw -g window-status-bell-style 'fg=colour255 bg=colour1 bold'
 EOFtmux
 
-chown -R $USER:$USER /home/$USER
+chown -R "$USER:$USER" "/home/$USER"
 
 echo DONE
-rm -rf /script.sh
-rm -rf /scriptarm.sh
-rm -rf /scriptpc.sh
+rm -f /script.sh /scriptarm.sh /scriptpc.sh

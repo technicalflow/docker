@@ -1,16 +1,12 @@
-FROM linuxserver/code-server:4.17.1
-ARG ARCH=/script.sh
+FROM linuxserver/code-server:4.140.0
+# ARG ARCH=/script.sh
 
-# set version label
-LABEL maintainer="marek@techfellow.it"
+LABEL org.opencontainers.image.authors="marek@techfellow.it"
 
-# environment settings
-ENV HOME="/home/vsadmin"
+ENV HOME="/home/madmin"
 
-# add local files
 COPY ./root/ /
 
-RUN sh $ARCH
-# ports and volumes
+RUN sh /script.sh
 
 EXPOSE 80

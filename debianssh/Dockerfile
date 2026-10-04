@@ -1,15 +1,13 @@
 # This container doesn't do anything except run the sshd daemon. It can be used
-# as a contained environment accessed remotely to retrieve or drop files for
-# archival.
-FROM debian:stable
-LABEL MAINTAINER 'marek from mysmall.cloud'
+# as a contained environment accessed remotely to retrieve or drop files for archival.
+FROM debian:stable-slim
+LABEL org.opencontainers.image.authors="marek@techfellow.it"
 
 # User we'll use to login with
-ENV USER sshadmin
+ENV USER=sshadmin
 
 # Update and install required packages
-RUN apt-get update && apt-get upgrade -y && apt-get install -y openssh-server rsync sudo dialog
-# RUN yum -y update && yum -y install openssh-server rsync && yum clean all
+RUN apt-get update && apt-get install -y openssh-server rsync sudo dialog
 
 # Create needed SSH keys
 # RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key
@@ -17,20 +15,24 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y openssh-server rs
 
 # Setup for certificate login ONLY
 RUN sed -i -e 's/#LogLevel INFO/LogLevel INFO/' \
-           -e 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' \
-           -e 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' \
-           -e 's/#PasswordAuthentication yes/PasswordAuthentication no/' \
-           -e 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' \
-           /etc/ssh/sshd_config
+    -e 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' \
+    -e 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' \
+    -e 's/#PasswordAuthentication yes/PasswordAuthentication no/' \
+    -e 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' \
+    /etc/ssh/sshd_config
 
-RUN useradd -m $USER -s /bin/bash; mkdir -p /run/sshd
+# Setup user, sudo permissions, and required directories in one layer
+RUN useradd -m $USER -s /bin/bash && echo "$USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/$USER; mkdir -p /run/sshd
 
-# User option
-COPY key.pub /home/sshadmin/.ssh/authorized_keys
-RUN chmod -R 644 /etc/ssh/ssh_host_* && chown -R $USER:$USER /home/$USER/.ssh && echo $USER 'ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers.d/$USER
+COPY --chown=$USER:$USER key.pub /home/$USER/.ssh/authorized_keys
+
+RUN chmod -R 644 /etc/ssh/ssh_host_* && chown -R $USER:$USER /home/$USER/.ssh && chmod 600 /home/$USER/.ssh/authorized_keys 
+
+HEALTHCHECK --interval=1m --timeout=5s CMD bash -c '</dev/tcp/127.0.0.1/22' || exit 1
 
 EXPOSE 22
+
 # User option
-USER sshadmin
+USER $USER
 
 CMD ["/usr/sbin/sshd", "-D"]

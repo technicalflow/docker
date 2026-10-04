@@ -1,22 +1,31 @@
----
-version: "3.6"
 services:
   dokuwiki:
-    image: ghcr.io/linuxserver/dokuwiki
+    image: ghcr.io/linuxserver/dokuwiki:latest
     container_name: dokuwiki
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     ports:
-      - '80:80'
-      - '443:443'
-    mem_limit: 256m
+      - "80:80"
+      - "443:443"
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Warsaw
     volumes:
-      - './config:/config'
-      # - configvol:/config //volume
-    restart: unless-stopped
+      - ./config:/config
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/ || exit 1"]
+      interval: 120s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
 
+      # - configvol:/config //volume
 
 #     networks:
 #       default:

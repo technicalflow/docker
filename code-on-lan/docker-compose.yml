@@ -1,5 +1,4 @@
 ---
-version: "3.6"
 services:
   col:
     build: .
@@ -12,7 +11,6 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Warsaw
-      - HOSTNAME=col
     volumes:
       - colvol:/config
 #      - ./lab:/config/lab

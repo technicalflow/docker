@@ -3,10 +3,10 @@
 PUID=${PUID:-911}
 PGID=${PGID:-911}
 
-#useradd -m -d /home/ -s /bin/bash vsadmin
-groupmod -o -g "$PGID" vsadmin
-usermod -o -u "$PUID" vsadmin
-# usermod -aG users,sudo vsadmin
+#useradd -m -d /home/ -s /bin/bash madmin
+groupmod -o -g "$PGID" madmin
+usermod -o -u "$PUID" madmin
+# usermod -aG users,sudo madmin
 
 echo '
 To support LSIO projects visit:
@@ -15,10 +15,10 @@ https://www.linuxserver.io/donate/
 GID/UID
 -------------------------------------'
 echo "
-User uid:    $(id -u vsadmin)
-User gid:    $(id -g vsadmin)
+User uid:    $(id -u madmin)
+User gid:    $(id -g madmin)
 -------------------------------------
 "
-chown -R vsadmin:vsadmin /app
-chown -R vsadmin:vsadmin /config
-chown -R vsadmin:vsadmin /home/vsadmin
+chown -R madmin:madmin /app
+chown -R madmin:madmin /config
+chown -R madmin:madmin /home/madmin
