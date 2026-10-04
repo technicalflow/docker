@@ -1,9 +1,10 @@
 services:
   web:
-    image: nginx:latest
+    # build: .
+    image: ipcheck2
     deploy:
       replicas: 4
-    mem_limit: 16m
+    mem_limit: 128m
     environment:
       - TZ=Europe/Warsaw
       - PUID=1000

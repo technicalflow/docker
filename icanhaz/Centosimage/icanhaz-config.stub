@@ -2,17 +2,9 @@
     <Directory /var/www/html/ip/>
         WSGIProcessGroup icanhaz
         WSGIApplicationGroup %{GLOBAL}
-        Order deny,allow
-        Allow from all
+        Require all granted
 
-    <Limit GET HEAD>
-        order deny,allow
-        allow from all
-    </Limit>
-
-    <Limit POST PUT DELETE>
-        order allow,deny
-        deny from all
-    </Limit>
-
+        <LimitExcept GET HEAD>
+            Require all denied
+        </LimitExcept>
     </Directory>

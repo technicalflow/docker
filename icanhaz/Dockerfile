@@ -1,15 +1,20 @@
-FROM debian:12
-LABEL MAINTAINER 'marek from mysmall.cloud'
+FROM python:3.12-alpine
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=Europe/Warsaw
+RUN adduser -D -u 1000 appuser
 
-RUN apt-get update -qq && apt-get install -y --no-install-recommends python3 python3-wheel python3-pip curl
-RUN pip3 install gunicorn flask --break-system-packages
-COPY ipcheck.py /
+WORKDIR /app
+COPY ipcheck.py .
 
-HEALTHCHECK --interval=1m --timeout=5s CMD curl -f http://localhost/ || exit 1
+RUN pip install --no-cache-dir flask gunicorn
+
+USER appuser
+
+HEALTHCHECK --interval=1m --timeout=5s CMD wget -q --spider http://127.0.0.1/ || exit 1
 
 EXPOSE 80
-USER 1000
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "ipcheck"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:80", "ipcheck:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:80", "--proxy-protocol", "--proxy-allow-from", "*", "ipcheck:application"]
+
+
+# For IPv6
+# CMD ["gunicorn", "--bind", "[::]:80", "ipcheck:application"]

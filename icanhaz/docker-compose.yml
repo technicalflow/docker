@@ -1,28 +1,15 @@
----
-version: "3.3"
-
 services:
   ip:
 #    build: .
     image: techfellow/ipcheck:latest
     container_name: ipcheck
-#    mem_limit: 128m
     ports:
       - "80:80"
-#      - "8443:443"
     environment:
-      TZ: 'Europe/Warsaw'
-
+      TZ: "Europe/Warsaw"
     restart: unless-stopped
-
-  ip2:
-    image: techfellow/ipcheck:ubuntu
-    container_name: ipchecku
-    environment:
-      TZ: 'Europe/Warsaw'
-#    mem_limit: 128m
-    ports:
-      - 8080:80
-
-    restart: unless-stopped
-
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

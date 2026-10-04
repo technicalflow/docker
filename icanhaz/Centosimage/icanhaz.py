@@ -27,11 +27,21 @@ app = Flask(__name__)
 
 @app.route("/")
 def icanhazafunction():
-    if 'icanhazptr' in request.host:
-        result = request.remote_addr
+    ip = request.headers.get("X-Forwarded-For", request.remote_addr)
+    if ip:
+        ip = ip.split(",")[0].strip()
     else:
-        result = request.remote_addr
-    return "%s\n" % result
+        ip = request.remote_addr
+
+    if "icanhazptr" in request.host:
+        try:
+            result = socket.gethostbyaddr(ip)[0]
+        except (socket.herror, socket.gaierror, socket.timeout):
+            result = ip
+    else:
+        result = ip
+
+    return f"{result}\n"
 
 if __name__ == "__main__":
     app.run()

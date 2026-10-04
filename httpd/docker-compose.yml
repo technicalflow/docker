@@ -1,9 +1,6 @@
----
-version: "3.3"
-
 services:
   httpdapp:
-#    build: .
+    # build: .
     image: techfellow/httpdappa
     container_name: httpdapp
     mem_limit: 32m
@@ -22,6 +19,6 @@ services:
     ports:
       - "8083:80"
     environment:
-      TZ: 'Europe/Warsaw'
+      TZ: "Europe/Warsaw"
 
     restart: unless-stopped

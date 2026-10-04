@@ -3,12 +3,12 @@ from flask import Flask, request
 
 application = Flask(__name__)
 
-@application.url("/")
+@application.route("/")
 def geturlfunction():
-    return "%s\n" % request.url
+    return f"{request.url}\n"
 
 if __name__ == "__main__":
-    app.run()
+    application.run(host="0.0.0.0")
 
 # request.url
 # request.remote_addr

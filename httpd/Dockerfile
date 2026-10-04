@@ -1,20 +1,27 @@
-#App image
-FROM httpd:alpine
-LABEL maintainer="Marek from mysmall.cloud"
+# App image
+FROM httpd:2.4-alpine
+LABEL org.opencontainers.image.authors="marek@techfellow.it"
 
-COPY my-entrypoint.sh /
-RUN apk add curl
-HEALTHCHECK --interval=1m --timeout=3s CMD curl -f http://localhost/ || exit 1
+RUN apk add --no-cache curl
 
-WORKDIR  /usr/local/apache2/htdocs
+# Configure Apache server name to avoid startup FQDN warnings
+RUN echo "ServerName 127.0.0.1" >> /usr/local/apache2/conf/httpd.conf
+
+# Copy entrypoint script and ensure execution permissions
+COPY my-entrypoint.sh /usr/local/bin/my-entrypoint.sh
+
+# Adjust permissions so non-root www-data user can write generated web files and logs
+RUN chmod +x /usr/local/bin/my-entrypoint.sh; chown -R www-data:www-data /usr/local/apache2/htdocs /usr/local/apache2/logs
+
+WORKDIR /usr/local/apache2/htdocs
 
 EXPOSE 80
 
-ENTRYPOINT ["/my-entrypoint.sh"]
-RUN chown -R www-data:www-data /usr/local/apache2/htdocs && chown -R www-data:www-data /usr/local/apache2/logs/ && echo "ServerName 127.0.0.1" >> /usr/local/apache2/conf/httpd.conf
-
-# RUN sh /docker-entrypoint.sh
-#STOPSIGNAL SIGQUIT
-
+# Switch to non-root user for security best practice
 USER www-data
+
+# Healthcheck for load balancer health monitoring
+HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 CMD curl -f http://localhost/ || exit 1
+
+ENTRYPOINT ["/usr/local/bin/my-entrypoint.sh"]
 CMD ["httpd-foreground"]

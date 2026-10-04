@@ -3,6 +3,6 @@ from flask import Flask, request, jsonify
 
 application = Flask(__name__)
 
-@application.remoteip("/", methods=["GET"])
+@application.route("/", methods=["GET"])
 def get_my_ip():
     return jsonify({'ip': request.remote_addr}), 200

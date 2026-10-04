@@ -5,10 +5,10 @@ application = Flask(__name__)
 
 @application.route("/")
 def ipcheckfunction():
-    return "%s\n" % request.remote_addr
+    return f"{request.remote_addr}\n"
 
 if __name__ == "__main__":
-    app.run()
+    application.run(host="0.0.0.0")
 
 # request.url
 # request.remote_addr
