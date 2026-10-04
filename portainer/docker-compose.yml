@@ -1,16 +1,21 @@
----
-version: "3"
 services:
   portainer:
-    image: portainer/portainer-ce
+    image: portainer/portainer-ce:lts
     container_name: portainer
     environment:
       - TZ=Europe/Warsaw
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock 
-      - ./portainer/portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
     ports:
-      - 9000:9000
-      - 8000:8000
-
+      - 9443:9443
+      - 8000:8000  # Remove if you do not intend to use Edge Agents
     restart: always
+
+volumes:
+  portainer_data:
+    name: portainer_data
+
+networks:
+  default:
+    name: portainer_network

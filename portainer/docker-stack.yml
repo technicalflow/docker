@@ -11,11 +11,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
-    ports:
-      - target: 9001
-        published: 9001
-        protocol: tcp
-        mode: host
+    # ports:
+    #   - target: 9001
+    #     published: 9001
+    #     protocol: tcp
+    #     mode: host
     depends_on:
       - portal
     deploy:
@@ -27,18 +27,20 @@ services:
         parallelism: 1
       resources:
         reservations:
-          memory: 20M
-        limits:
           memory: 64M
+        limits:
+          memory: 128M
       restart_policy:
         condition: any
         delay: 5s
         max_attempts: 10
     networks:
       -  portainer
+
   portal:
     image: portainer/portainer-ce
-    command: -H tcp://tasks.agent:9001 --tlsskipverify --admin-password='${PASSWORD}'
+    # command: -H tcp://tasks.agent:9001 --tlsskipverify --admin-password='${PASSWORD}'
+    command: -H tcp://tasks.agent:9001 --tlsskipverify
     environment:
       TZ: Europe/Warsaw
       AGENT_SECRET: ${AGENT_SECRET}
@@ -54,7 +56,7 @@ services:
         parallelism: 1
       resources:
         reservations:
-          memory: 20M
+          memory: 64M
         limits:
           memory: 128M
       restart_policy:
@@ -64,6 +66,7 @@ services:
     ports:
       - 9000:9000
       - 8000:8000
+      - "9443:9443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
