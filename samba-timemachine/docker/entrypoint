@@ -1,0 +1,93 @@
+#!/bin/bash
+set -e
+
+export PASS="${PASS:-RANDOM}"
+export USER="${USER:-timemachine}"
+export USERID="${USERID:-1311}"
+export GROUPID="${GROUPID:-1311}"
+export TMSIZE="${TMSIZE:-0}"
+export SHARENAME="${SHARENAME:-Data}"
+export BACKUPDIR="${BACKUPDIR:-/backups}"
+
+createUser() {
+    if ! getent group timemachine_users >/dev/null 2>&1; then
+        groupadd -o -g "${GROUPID}" timemachine_users
+        echo "Created group timemachine_users with GID ${GROUPID}"
+    fi
+
+    if [ "$PASS" = "RANDOM" ]; then
+        PASS=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 16)
+        echo "Generated Samba password for user '${USER}': ${PASS}"
+    fi
+
+    if ! id -u "${USER}" >/dev/null 2>&1; then
+        useradd -u "${USERID}" -g "${GROUPID}" -M -s /sbin/nologin "${USER}"
+        echo "Created user '${USER}' with UID ${USERID}"
+    fi
+    usermod -aG timemachine_users "${USER}"
+
+    printf "%s\n%s\n" "$PASS" "$PASS" | smbpasswd -s -a "${USER}"
+    smbpasswd -e "${USER}" >/dev/null 2>&1 || true
+}
+
+export FORCE_PERMISSIONS_RESET="${FORCE_PERMISSIONS_RESET:-false}"
+
+backupConfig() {
+    if [ ! -d "${BACKUPDIR}" ]; then
+        echo "ERROR: ${BACKUPDIR} not found. Did you forget to mount the volume?"
+        exit 1
+    fi
+
+    local current_owner
+    current_owner=$(stat -c '%u:%g' "${BACKUPDIR}" 2>/dev/null || echo "")
+    if [ "${current_owner}" != "${USERID}:${GROUPID}" ]; then
+        echo "Setting ownership of ${BACKUPDIR} root to ${USER}:${GROUPID}"
+        chown "${USER}:${GROUPID}" "${BACKUPDIR}"
+        chmod 700 "${BACKUPDIR}"
+    fi
+
+    if [ "${FORCE_PERMISSIONS_RESET}" = "true" ]; then
+        echo "FORCE_PERMISSIONS_RESET is set. Running recursive chown on ${BACKUPDIR}..."
+        chown -R "${USER}:${GROUPID}" "${BACKUPDIR}"
+        chmod -R u+rwX,g=,o= "${BACKUPDIR}"
+    fi
+
+    # macOS Time Machine and Spotlight control files
+    touch "${BACKUPDIR}/.com.apple.TimeMachine.supported"
+    touch "${BACKUPDIR}/.metadata_never_index"
+    chown "${USER}:${GROUPID}" "${BACKUPDIR}/.com.apple.TimeMachine.supported" "${BACKUPDIR}/.metadata_never_index" 2>/dev/null || true
+    chmod 0644 "${BACKUPDIR}/.com.apple.TimeMachine.supported" "${BACKUPDIR}/.metadata_never_index" 2>/dev/null || true
+}
+
+makeOptions() {
+    # Keep original config as backup for idempotent container restarts
+    if [ ! -f /etc/samba/smb.conf.orig ]; then
+        cp /etc/samba/smb.conf /etc/samba/smb.conf.orig
+    fi
+
+    local tm_size_param="0"
+    if [ "${TMSIZE}" -gt 0 ] 2>/dev/null; then
+        tm_size_param="${TMSIZE}M"
+        local quota_bytes=$((TMSIZE * 1000000))
+        sed "s#REPLACE_TM_SIZE#${quota_bytes}#" /tmp/template_quota > "${BACKUPDIR}/.com.apple.TimeMachine.quota.plist"
+        echo "Configured Time Machine quota: ${TMSIZE} MB"
+    else
+        rm -f "${BACKUPDIR}/.com.apple.TimeMachine.quota.plist"
+    fi
+
+    sed -e "s#REPLACE_SHARENAME#${SHARENAME}#g" \
+        -e "s#fruit:time machine max size = 0#fruit:time machine max size = ${tm_size_param}#g" \
+        /etc/samba/smb.conf.orig > /etc/samba/smb.conf
+}
+
+if [ -z "$1" ] || [ "${1:0:1}" = '-' ]; then
+    createUser
+    backupConfig
+    makeOptions
+    echo "Starting Samba daemon for share [${SHARENAME}]..."
+    set -- /usr/sbin/smbd --no-process-group --log-stdout --foreground "$@"
+fi
+
+exec "$@"
+
+

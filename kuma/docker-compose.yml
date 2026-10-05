@@ -8,7 +8,7 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - kuma_data:/app/data 
+      - /data/Backup/containers/uptime:/app/data 
     environment:
       - TZ=Europe/Warsaw
       - UMASK=0022  # Set your file permissions manually

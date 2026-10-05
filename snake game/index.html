@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <link rel="stylesheet" href="css/site.css">
+</head>
+
+<body>
+    <h1>Snake</h1>
+    <div class="scoreboard">
+        <div>Score: <span id="score">0</span></div>
+        <div>High Score: <span id="high-score">0</span></div>
+    </div>
+
+    <canvas id="gc" width="600" height="600"></canvas>
+
+    <p class="instructions">Use Arrow Keys or WASD keys to play</p>
+
+    <script>
+        const canvas = document.getElementById("gc");
+        const ctx = canvas.getContext("2d");
+        const scoreEl = document.getElementById("score");
+        const highScoreEl = document.getElementById("high-score");
+
+        const gridSize = 20;
+        const tileCount = canvas.width / gridSize;
+
+        let px = 10, py = 10;
+        let xv = 0, yv = 0;
+        let ax = 15, ay = 15;
+        let trail = [];
+        let tail = 5;
+        let score = 0;
+        let highScore = localStorage.getItem("snake_high_score") || 0;
+        highScoreEl.textContent = highScore;
+
+        function resetGame() {
+            tail = 5;
+            score = 0;
+            scoreEl.textContent = score;
+            px = 10;
+            py = 10;
+            xv = 0;
+            yv = 0;
+            trail = [];
+        }
+
+        function spawnApple() {
+            let valid = false;
+            while (!valid) {
+                ax = Math.floor(Math.random() * tileCount);
+                ay = Math.floor(Math.random() * tileCount);
+                valid = !trail.some(segment => segment.x === ax && segment.y === ay);
+            }
+        }
+
+        function game() {
+            px += xv;
+            py += yv;
+
+            // Screen wrapping
+            if (px < 0) px = tileCount - 1;
+            if (px >= tileCount) px = 0;
+            if (py < 0) py = tileCount - 1;
+            if (py >= tileCount) py = 0;
+
+            // Clear background
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Snake
+            ctx.fillStyle = "#04d361";
+            for (let i = 0; i < trail.length; i++) {
+                ctx.fillRect(trail[i].x * gridSize, trail[i].y * gridSize, gridSize - 2, gridSize - 2);
+                // Self-collision
+                if ((xv !== 0 || yv !== 0) && trail[i].x === px && trail[i].y === py) {
+                    resetGame();
+                    return;
+                }
+            }
+
+            trail.push({ x: px, y: py });
+            while (trail.length > tail) {
+                trail.shift();
+            }
+
+            // Apple collision
+            if (ax === px && ay === py) {
+                tail++;
+                score++;
+                scoreEl.textContent = score;
+                if (score > highScore) {
+                    highScore = score;
+                    highScoreEl.textContent = highScore;
+                    localStorage.setItem("snake_high_score", highScore);
+                }
+                spawnApple();
+            }
+
+            // Draw Apple
+            ctx.fillStyle = "#e53e3e";
+            ctx.fillRect(ax * gridSize, ay * gridSize, gridSize - 2, gridSize - 2);
+        }
+
+        document.addEventListener("keydown", (e) => {
+            switch (e.key) {
+                case "ArrowLeft":
+                case "a":
+                case "A":
+                    if (xv !== 1) { xv = -1; yv = 0; }
+                    e.preventDefault();
+                    break;
+                case "ArrowUp":
+                case "w":
+                case "W":
+                    if (yv !== 1) { xv = 0; yv = -1; }
+                    e.preventDefault();
+                    break;
+                case "ArrowRight":
+                case "d":
+                case "D":
+                    if (xv !== -1) { xv = 1; yv = 0; }
+                    e.preventDefault();
+                    break;
+                case "ArrowDown":
+                case "s":
+                case "S":
+                    if (yv !== -1) { xv = 0; yv = 1; }
+                    e.preventDefault();
+                    break;
+            }
+        });
+
+        setInterval(game, 1000 / 15);
+    </script>
+</body>
+
+</html>

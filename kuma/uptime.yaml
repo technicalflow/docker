@@ -1,0 +1,16 @@
+services:
+  uptime-kuma:
+    hostname: uptime-kuma
+    image: louislam/uptime-kuma:2
+    restart: unless-stopped
+    volumes:
+      - /data/Backup/containers/uptime:/app/data
+    ports:
+      - "0.0.0.0:3001:3001/tcp"
+#     networks:
+#       macvlan:
+#         ipv4_address: 192.168.50.217
+
+# networks:
+#   macvlan:
+#     external: true

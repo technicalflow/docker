@@ -1,0 +1,40 @@
+services:
+  glpi:
+    image: "docker.io/glpi/glpi:latest"
+    restart: "unless-stopped"
+    volumes:
+      - glpi_data:/var/glpi
+    environment:
+      GLPI_SKIP_AUTOINSTALL: "false"
+      GLPI_SKIP_AUTOUPDATE: "false"
+      GLPI_DB_HOST: db
+      GLPI_DB_NAME: glpi
+      GLPI_DB_USER: glpi
+      GLPI_DB_PASSWORD: glpi
+    depends_on:
+      - db
+    ports:
+      - "0.0.0.0:8080:80"
+    networks:
+      - glpi_net
+
+  db:
+    image: "docker.io/mysql:9.7"
+    restart: "unless-stopped"
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: "glpi"
+      MYSQL_USER: "glpi"
+      MYSQL_PASSWORD: "glpi"
+    networks:
+      - glpi_net
+
+networks:
+  glpi_net:
+    driver: bridge
+
+volumes:
+  glpi_data:
+  db_data:
