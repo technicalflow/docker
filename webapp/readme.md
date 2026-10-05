@@ -1,7 +1,8 @@
-## Sample website to show Docker Stack or Docker Compose load balancing capabilities in Docker Swarm mode
-#
+# Sample Web App
 
-For a container image in user mode go with this image: 
+Sample website demonstrating Docker Compose and Docker Swarm (Docker Stack) load balancing capabilities.
+
+For a container image running in non-root user mode, refer to:
 https://github.com/technicalflow/docker/tree/master/httpd
 <br>
 

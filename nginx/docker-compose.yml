@@ -1,18 +1,11 @@
----
-version: "3.3"
 services:
   newnginx:
-    image: nginx:latest
-    hostname: nginx
-    deploy:
-      replicas: 1
-    command:  /usr/sbin/nginx -g 'daemon off;'
-    restart: always
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
     environment:
       - TZ=Europe/Warsaw
-    ports:
-      - 80:80
-
     volumes:
       - ./data:/usr/share/nginx/html
 

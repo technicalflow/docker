@@ -17,7 +17,7 @@ services:
       - wpsite
 
   phpmyadmin:
-    image: phpmyadmin
+    image: phpmyadmin:latest
     container_name: phpmyadmin
     depends_on:
       - db

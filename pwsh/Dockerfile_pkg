@@ -6,20 +6,16 @@ ARG fromTag=noble
 
 FROM ${imageRepo}:${fromTag}
 
-ARG TARGETARCH
-ARG PS_VERSION=7.6.6
-ARG PS_INSTALL_VERSION=7
-
-ENV PS_INSTALL_FOLDER=/opt/microsoft/powershell/$PS_INSTALL_VERSION \
+ENV PS_INSTALL_FOLDER=/opt/microsoft/powershell/7 \
     TZ=Europe/Warsaw \
     DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
     LC_ALL=en_US.UTF-8 \
     LANG=en_US.UTF-8 \
+    UBUNTU=24.04 \
     PSModuleAnalysisCachePath=/var/cache/microsoft/powershell/PSModuleAnalysisCache/ModuleAnalysisCache \
     POWERSHELL_DISTRIBUTION_CHANNEL=PSDocker-Ubuntu-24.04 \
     DEBIAN_FRONTEND=noninteractive
 
-# Install system dependencies
 RUN apt-get update && apt-get install --no-install-recommends -y \
     ca-certificates \
     curl \
@@ -34,21 +30,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     net-tools \
     wget
 
-# Install PowerShell
-RUN set -eux; \
-    case "${TARGETARCH:-amd64}" in \
-    arm64) PS_ARCH="arm64" ;; \
-    amd64) PS_ARCH="x64" ;; \
-    *) echo "Unsupported architecture: ${TARGETARCH}"; exit 1 ;; \
-    esac; \
-    mkdir -p "${PS_INSTALL_FOLDER}"; \
-    wget --no-verbose -O /tmp/powershell.tar.gz "https://github.com/PowerShell/PowerShell/releases/download/v${PS_VERSION}/powershell-${PS_VERSION}-linux-${PS_ARCH}.tar.gz"; \
-    tar -zxf /tmp/powershell.tar.gz -C "${PS_INSTALL_FOLDER}"; \
-    rm -f /tmp/powershell.tar.gz; \
-    chmod a+x,o-w "${PS_INSTALL_FOLDER}/pwsh"; \
-    ln -s "${PS_INSTALL_FOLDER}/pwsh" /usr/bin/pwsh; \
-    ln -s "${PS_INSTALL_FOLDER}/pwsh" /usr/bin/pwsh-lts; \
-    locale-gen en_US.UTF-8
+RUN wget -q https://packages.microsoft.com/config/ubuntu/${UBUNTU}/packages-microsoft-prod.deb \
+    && dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb && apt update && apt install -y powershell && rm -rf /var/lib/apt/lists/* && locale-gen en_US.UTF-8
 
 RUN pwsh -Command 'Set-PSRepository -Name PSGallery -InstallationPolicy Trusted'
 # RUN pwsh -command 'update-module'

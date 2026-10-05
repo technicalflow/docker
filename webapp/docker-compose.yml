@@ -1,20 +1,16 @@
----
-version: "3"
-
 services:
   website:
     build: .
-    # image: techfellow/webappa
+    # image: techfellow/webappa:latest
     container_name: website
     ports:
       - "80:80"
     environment:
-      TZ: 'Europe/Warsaw'
+      TZ: Europe/Warsaw
       NGINX_HOST: web.local
       NGINX_PORT: 80
-# Volumes store your data between container upgrades
-#    volumes:
-#      - './website:/var/www/html'
-#      - './website:/usr/share/nginx/html/'
-    restart: on-failure
+    # Volumes store your data between container upgrades
+    # volumes:
+    #   - ./website:/usr/share/nginx/html:ro
+    restart: unless-stopped
     

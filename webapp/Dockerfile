@@ -1,16 +1,17 @@
-#App image
-FROM nginx:latest
+# App image
+FROM nginx:stable
 LABEL maintainer="Marek from mysmall.cloud"
 
 # COPY website/index.html /usr/share/nginx/html
-COPY my-entrypoint.sh /
+COPY --chmod=755 my-entrypoint.sh /my-entrypoint.sh
 
-HEALTHCHECK --interval=1m --timeout=5s CMD curl -f http://localhost/ || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 CMD curl -f http://localhost/ || exit 1
 
-WORKDIR  /usr/share/nginx/html
+WORKDIR /usr/share/nginx/html
 
 EXPOSE 80
-#	EXPOSE 443
-ENTRYPOINT ["/my-entrypoint.sh"]
 
-CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+STOPSIGNAL SIGQUIT
+
+ENTRYPOINT ["/my-entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]

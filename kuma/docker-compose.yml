@@ -1,33 +1,36 @@
 ---
-version: '3.3'
-
 services:
-  kuma:
-    image: louislam/uptime-kuma
+  uptime-kuma:
+    image: louislam/uptime-kuma:2
     container_name: uptime-kuma
-    mem_limit: 128m
-
-    volumes:
-      - kuma_data:/app/data
+    mem_limit: 256m
+    restart: always
     ports:
-      - 80:3001
-
+      - "3001:3001"
+    volumes:
+      - kuma_data:/app/data 
     environment:
+      - TZ=Europe/Warsaw
+      - UMASK=0022  # Set your file permissions manually
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/Warsaw
+    networks:
+      - kuma_network 
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 5s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
-    restart: unless-stopped
-
-#    networks:
-#      default:
-#        ipv4_address: 192.168.30.243
-
-#networks:
-#  default:
-#    external:
-#    name: macvlan
+networks:
+  kuma_network:
+    driver: bridge
 
 volumes:
   kuma_data:
-
