@@ -15,7 +15,7 @@ RUN testparm -s /etc/samba/smb.conf >/dev/null && mkdir -p ${BACKUPDIR}
 
 VOLUME ["/backups"]
 
-EXPOSE 445/tcp
+EXPOSE 445/tcp 137/tcp 138/tcp
 
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
     CMD smbcontrol smbd ping || exit 1
