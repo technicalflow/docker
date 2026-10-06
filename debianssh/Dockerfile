@@ -19,10 +19,11 @@ RUN sed -i -e 's/#LogLevel INFO/LogLevel INFO/' \
     -e 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' \
     -e 's/#PasswordAuthentication yes/PasswordAuthentication no/' \
     -e 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' \
+    -e 's/UsePAM yes/UsePAM no/' \
     /etc/ssh/sshd_config
 
 # Setup user, sudo permissions, and required directories in one layer
-RUN useradd -m $USER -s /bin/bash && echo "$USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/$USER; mkdir -p /run/sshd
+RUN useradd -m $USER -s /bin/bash && passwd -d $USER && echo "$USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/$USER; mkdir -p /run/sshd
 
 COPY --chown=$USER:$USER key.pub /home/$USER/.ssh/authorized_keys
 

@@ -1,7 +1,6 @@
 services:
   web:
     image: techfellow/webappa:latest
-    container_name: webappa
     deploy:
       replicas: 6
     mem_limit: 16m
