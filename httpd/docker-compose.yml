@@ -1,7 +1,7 @@
 services:
   httpdapp:
-    # build: .
-    image: techfellow/httpdappa
+    build: .
+    # image: techfellow/httpdappa
     container_name: httpdapp
     mem_limit: 32m
     ports:

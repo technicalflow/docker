@@ -1,6 +1,6 @@
 services:
   web:
-    image: nginx:latest
+    image: techfellow/httpdappa
     networks:
       - lbnet
     environment:
