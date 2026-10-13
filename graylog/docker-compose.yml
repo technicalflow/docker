@@ -42,8 +42,8 @@ services:
     networks:
       - graylog
     volumes:
-      # - "graylog-datanode:/var/lib/graylog-datanode"
-      - "/data/Backup/graylog/datanode:/var/lib/graylog-datanode:U"
+      - "graylog-datanode:/var/lib/graylog-datanode"
+      # - "/data/Backup/graylog/datanode:/var/lib/graylog-datanode:U"
     restart: "on-failure"
 
   # Graylog: https://hub.docker.com/r/graylog/graylog-enterprise
@@ -81,8 +81,8 @@ services:
     networks:
       - graylog
     volumes:
-      # - "graylog_data:/usr/share/graylog/data"
-      - "/data/Backup/graylog/server:/usr/share/graylog/data"
+      - "graylog_data:/usr/share/graylog/data"
+      # - "/data/Backup/graylog/server:/usr/share/graylog/data"
 
     restart: "on-failure"
 
@@ -93,5 +93,5 @@ networks:
 volumes:
   mongodb_data:
   mongodb_config:
-  # graylog-datanode:
-  # graylog_data:
+  graylog-datanode:
+  graylog_data:

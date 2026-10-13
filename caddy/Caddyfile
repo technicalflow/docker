@@ -1,0 +1,5 @@
+#EXAMPLE Caddyfile for cddash_readonly
+uptime.example.com {
+    tls /etc/ssl/certs/fullchain1.pem /etc/ssl/certs/privkey1.pem
+    reverse_proxy 192.168.1.203:3001
+}

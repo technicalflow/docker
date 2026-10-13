@@ -1,9 +1,9 @@
 services:
   web:
-    image: httpdappa
+    image: techfellow/httpdappa:latest
     deploy:
-      replicas: 12
-    mem_limit: 8m
+      replicas: 6
+    mem_limit: 32m
     environment:
       - TZ=Europe/Warsaw
     networks:
@@ -38,5 +38,5 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.25.25.0/24
-          gateway: 172.25.25.1
+        - subnet: 172.31.31.0/24
+          gateway: 172.31.31.1

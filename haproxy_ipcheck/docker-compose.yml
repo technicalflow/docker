@@ -2,7 +2,6 @@ services:
   web:
     # build: .
     image: techfellow/ipcheck:latest
-    container_name: ipcheck
     deploy:
       replicas: 12
     mem_limit: 128m

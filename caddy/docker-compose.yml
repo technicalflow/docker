@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  caddy:
+    image: caddy:latest
+    container_name: caddy-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # - ./data:/data
+      # - ./config:/config
+      # Replace this with the actual path to your Let's Encrypt certificates
+      - /etc/ssl/certs:/etc/ssl/certs:ro
+    # Optional: connect to your existing docker network if your backend services are containerized
+    # networks:
+    #  - homelab_network

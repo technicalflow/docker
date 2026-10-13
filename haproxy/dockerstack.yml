@@ -1,6 +1,6 @@
 services:
   web:
-    image: techfellow/httpdappa
+    image: techfellow/httpdappa:latest
     networks:
       - lbnet
     environment:

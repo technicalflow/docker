@@ -8,12 +8,11 @@ services:
       - "8082:80"
     environment:
       TZ: 'Europe/Warsaw'
-      
     restart: unless-stopped
 
   httpdappa:
 #    build: .
-    image: techfellow/httpdappa
+    image: techfellow/httpdappa:latest
     container_name: httpdappa
     mem_limit: 32m
     ports:

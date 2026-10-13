@@ -1,8 +1,8 @@
 services:
   caddy-dashboard:
-    # build: .
-    image: techfellow/cadash:latest
-    container_name: caddy-dashboard
+    build: .
+    # image: techfellow/cadash:latest
+    container_name: caddy-dash
     restart: unless-stopped
     ports:
       - "8060:80"

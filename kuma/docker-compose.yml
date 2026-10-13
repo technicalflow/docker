@@ -8,14 +8,14 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - /data/Backup/containers/uptime:/app/data 
+      - /data/Backup/containers/uptime:/app/data
     environment:
       - TZ=Europe/Warsaw
       - UMASK=0022  # Set your file permissions manually
       - PUID=1000
       - PGID=1000
     networks:
-      - kuma_network 
+      - kuma_network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001"]
       interval: 30s
