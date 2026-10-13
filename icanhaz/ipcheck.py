@@ -5,11 +5,9 @@ application = Flask(__name__)
 
 @application.route("/")
 def ipcheckfunction():
-    return f"{request.remote_addr}\n"
+    # Read client IP from Caddy's forwarded header, fallback to remote_addr
+    ip = request.headers.get("X-Forwarded-For", request.remote_addr).split(",")[0].strip()
+    return f"{ip}\n"
 
 if __name__ == "__main__":
     application.run(host="0.0.0.0")
-
-# request.url
-# request.remote_addr
-# request.headers

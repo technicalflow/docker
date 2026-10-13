@@ -1,7 +1,7 @@
 services:
   ip:
-#    build: .
-    image: techfellow/ipcheck:latest
+    build: .
+    # image: techfellow/ipcheck:latest
     container_name: ipcheck
     ports:
       - "80:80"

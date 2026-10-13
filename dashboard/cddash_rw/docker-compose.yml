@@ -1,0 +1,16 @@
+services:
+  caddy-dashboard:
+    build: .
+    container_name: caddy-dashboard
+    restart: unless-stopped
+    ports:
+      - "8070:80"
+    volumes:
+      # Mount folder containing Caddyfile (folder share):
+      - ./:/etc/caddy
+      # Alternatively mount a single file:
+      # - ./Caddyfile:/etc/caddy/Caddyfile
+    environment:
+      - CADDYFILE_PATH=/etc/caddy
+      - PORT=80
+

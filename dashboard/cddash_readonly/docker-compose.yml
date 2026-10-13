@@ -1,0 +1,17 @@
+services:
+  caddy-dashboard:
+    # build: .
+    image: techfellow/cadash:latest
+    container_name: caddy-dashboard
+    restart: unless-stopped
+    ports:
+      - "8060:80"
+    volumes:
+      # Mount folder containing Caddyfile (folder share):
+      # - ./:/etc/caddy:ro
+      # Alternatively mount a single file:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    environment:
+      - CADDYFILE_PATH=/etc/caddy
+      - PORT=80
+

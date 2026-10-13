@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Lab Dashboard</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <input type="checkbox" id="theme-toggle" class="theme-toggle-checkbox" style="display: none !important;">
+
+  <div class="dashboard-wrapper">
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+      <div class="brand">
+        <div class="brand-logo">
+          <i class="fa-solid fa-house" style="color: white; font-size: 18px;"></i>
+        </div>
+        <span class="brand-name">Home Lab</span>
+      </div>
+
+      <div class="search-container">
+        <span class="search-icon">
+          <i class="fa-solid fa-magnifying-glass" style="font-size: 14px;"></i>
+        </span>
+        <input type="text" class="search-input" placeholder="Search services, address, or domain (or press '/')...">
+      </div>
+
+      <div class="nav-actions">
+        <button type="button" class="btn btn-primary" onclick="openAddModal()">
+          <i class="fa-solid fa-plus" style="margin-right: 6px; font-size: 12px;"></i>Add Service
+        </button>
+        <a href="" class="btn btn-outline" onclick="window.location.reload(); return false;">
+          <i class="fa-solid fa-rotate-right" style="margin-right: 6px; font-size: 12px;"></i>Refresh
+        </a>
+      </div>
+    </header>
+
+    <!-- Sub Status Bar -->
+    <div class="status-bar">
+      <div class="status-left">
+        <span class="status-indicator"></span>
+        <span class="status-text"><strong>0</strong> Services Active</span>
+        <span class="status-divider"></span>
+        <span class="scan-time">Last scan: Never</span>
+      </div>
+      <div class="status-right">
+        <label for="theme-toggle" class="meta-item">
+          <span class="theme-icon-dark">
+            <i class="fa-solid fa-sun" style="font-size: 13px;"></i>
+            Light Theme
+          </span>
+          <span class="theme-icon-light">
+            <i class="fa-solid fa-moon" style="font-size: 13px;"></i>
+            Dark Theme
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="content-container">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2 class="section-title">Services</h2>
+          <span class="badge-count">0</span>
+        </div>
+      </div>
+
+      <!-- Services Grid -->
+      <div class="services-grid">
+        <!-- SERVICES_START -->
+        <div class="empty-state">
+          <div class="empty-state-icon">
+            <i class="fa-solid fa-server" style="font-size: 32px;"></i>
+          </div>
+          <h3>No Services Detected</h3>
+          <p>Waiting for Caddyfile or add your first service using the button above.</p>
+        </div>
+        <!-- SERVICES_END -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Service Modal -->
+  <div id="add-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-solid fa-plus-circle" style="margin-right: 8px; color: var(--primary-blue);"></i>Add Service</h3>
+        <button type="button" class="modal-close" onclick="closeAddModal()">&times;</button>
+      </div>
+      <form id="add-service-form" onsubmit="submitAddService(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="svc-name">Friendly Name</label>
+            <input type="text" id="svc-name" class="form-input" placeholder="e.g. Grafana Monitoring">
+            <span class="form-help">Saved as comment in Caddyfile</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="svc-domain">Domain Name <span class="req">*</span></label>
+            <input type="text" id="svc-domain" class="form-input" placeholder="e.g. grafana.msexperts.pl" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" style="flex: 2;">
+              <label class="form-label" for="svc-upstream">IP Address or DNS <span class="req">*</span></label>
+              <input type="text" id="svc-upstream" class="form-input" placeholder="e.g. 192.168.50.202" required>
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label class="form-label" for="svc-port">Port <span class="req">*</span></label>
+              <input type="text" id="svc-port" class="form-input" placeholder="e.g. 3000" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="svc-transport">Transport Type</label>
+            <select id="svc-transport" class="form-input form-select">
+              <option value="">Default (HTTP)</option>
+              <option value="https">HTTPS</option>
+              <option value="http">HTTP</option>
+              <option value="h2c">H2C</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-checkbox-label">
+              <input type="checkbox" id="svc-enable-cert" class="form-checkbox" onchange="toggleCertFields()">
+              <span>Add Custom Certificate (TLS)</span>
+            </label>
+          </div>
+
+          <div id="cert-fields" class="cert-fields-box" style="display: none;">
+            <div class="form-group">
+              <label class="form-label" for="svc-fullchain">Fullchain Certificate</label>
+              <input type="text" id="svc-fullchain" class="form-input" placeholder="e.g. /etc/ssl/certs/fullchain1.pem">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="svc-privkey">Private Key</label>
+              <input type="text" id="svc-privkey" class="form-input" placeholder="e.g. /etc/ssl/certs/privkey1.pem">
+            </div>
+          </div>
+
+          <div id="modal-error" class="modal-error" style="display: none;"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeAddModal()">Cancel</button>
+          <button type="submit" id="btn-save" class="btn btn-primary">
+            <i class="fa-solid fa-check" style="margin-right: 6px;"></i>Save Service
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openAddModal() {
+      document.getElementById('add-modal').style.display = 'flex';
+      document.getElementById('modal-error').style.display = 'none';
+      document.getElementById('svc-name').focus();
+    }
+
+    function closeAddModal() {
+      document.getElementById('add-modal').style.display = 'none';
+      document.getElementById('add-service-form').reset();
+      document.getElementById('cert-fields').style.display = 'none';
+    }
+
+    function toggleCertFields() {
+      const enabled = document.getElementById('svc-enable-cert').checked;
+      const box = document.getElementById('cert-fields');
+      box.style.display = enabled ? 'flex' : 'none';
+      if (enabled) {
+        document.getElementById('svc-fullchain').focus();
+      }
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeAddModal();
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'SELECT') {
+        e.preventDefault();
+        document.querySelector('.search-input')?.focus();
+      }
+    });
+
+    document.getElementById('add-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeAddModal();
+    });
+
+    // Client-side search filtering
+    document.querySelector('.search-input')?.addEventListener('input', function(e) {
+      const q = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.service-card').forEach(function(card) {
+        card.style.display = card.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+
+    async function submitAddService(e) {
+      e.preventDefault();
+      const errBox = document.getElementById('modal-error');
+      const saveBtn = document.getElementById('btn-save');
+      errBox.style.display = 'none';
+
+      const enableCert = document.getElementById('svc-enable-cert').checked;
+      const fullchain = document.getElementById('svc-fullchain').value.trim();
+      const privkey = document.getElementById('svc-privkey').value.trim();
+
+      const payload = {
+        name: document.getElementById('svc-name').value.trim(),
+        domain: document.getElementById('svc-domain').value.trim(),
+        upstream: document.getElementById('svc-upstream').value.trim(),
+        port: document.getElementById('svc-port').value.trim(),
+        transport: document.getElementById('svc-transport').value.trim(),
+        enable_cert: enableCert,
+        cert_fullchain: fullchain,
+        cert_privkey: privkey
+      };
+
+      if (!payload.domain || !payload.upstream || !payload.port) {
+        errBox.textContent = 'Please fill in Domain, IP/DNS, and Port.';
+        errBox.style.display = 'block';
+        return;
+      }
+
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right: 6px;"></i>Saving...';
+
+      try {
+        const res = await fetch('/api/add-service', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          closeAddModal();
+          window.location.reload();
+        } else {
+          errBox.textContent = data.error || 'Failed to add service.';
+          errBox.style.display = 'block';
+        }
+      } catch (err) {
+        errBox.textContent = 'Network or server error: ' + err.message;
+        errBox.style.display = 'block';
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<i class="fa-solid fa-check" style="margin-right: 6px;"></i>Save Service';
+      }
+    }
+  </script>
+</body>
+</html>
