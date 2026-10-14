@@ -1,5 +1,9 @@
 # My docker test environment
 Most of the working images can be found on https://hub.docker.com/u/techfellow
+### caddy
+    Simple reverse proxy server with certificates from certbot
+### caddy-dashboard
+    Caddy Reverse Proxy Dashboard reading Caddyfile with read only and read write versions
 ### code-on-lan
 	My version of VS Code server for web for AMD64 and ARM architectures
 	It provides Docker Client, Terraform and Powershell with Az module
@@ -36,9 +40,10 @@ Most of the working images can be found on https://hub.docker.com/u/techfellow
 	Docker compose and Docker stack files for Portainer.io to manage your environment
 ### pwsh
 	Quickly accessible Powershell 7 Docker container with the Azure Az module for amd64 and arm64
+	Pkg version installs powershell from apt package but is only for amd64
 ### samba-timemachine
 	Samba file sharing for Time Machine backups
-### snake game
+### snakegame
 	Simple Snake game to show case application deployment on Docker
 ### traefik
 	Docker compose file with Traefik reverse proxy created to show load balancing capabilities in Docker
