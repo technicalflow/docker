@@ -1,0 +1,85 @@
+services:
+  postgresql:
+    container_name: postgresql
+    image: docker.io/library/postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${PG_DB:-authentik}
+      POSTGRES_PASSWORD: ${PG_PASS:-a0i21ns1R6s}
+      POSTGRES_USER: ${PG_USER:-authentik}
+    healthcheck:
+      interval: 30s
+      retries: 5
+      start_period: 20s
+      test:
+        - CMD-SHELL
+        - pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}
+      timeout: 5s
+    volumes:
+      - database:/var/lib/postgresql/data
+    networks:
+      internal:
+        aliases:
+          - postgresql
+
+  server:
+    container_name: authentik_server
+    image: ghcr.io/goauthentik/server:2026.8.4
+    command: server
+    restart: unless-stopped
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    environment:
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS:-a0i21ns1R6s}
+      AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:-OPdncfbq3Ed}
+    shm_size: 512mb
+    volumes:
+      - data:/data
+      - custom-templates:/templates
+    networks:
+      internal:
+      macvlan:
+        ipv4_address: 192.168.50.105
+
+  worker:
+    container_name: authentik_worker
+    image: ghcr.io/goauthentik/server:2026.8.4
+    command: worker
+    restart: unless-stopped
+    user: root
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    environment:
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS:-a0i21ns1R6s}
+      AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:-OPdncfbq3Ed}
+    shm_size: 512mb
+    volumes:
+      - data:/data
+      - /data/Backup/router/certs:/certs:z
+      - custom-templates:/templates
+    networks:
+      - internal
+
+volumes:
+  database:
+    driver: local
+  data:
+    driver: local
+  custom-templates:
+    driver: local
+
+networks:
+  macvlan:
+    external: true
+    name: macvlan
+  internal:
+    name: internal
+    driver: bridge
