@@ -1,5 +1,7 @@
 # My docker test environment
 Most of the working images can be found on https://hub.docker.com/u/techfellow
+### authentik
+	Docker compose file for the authentik identity provider with PostgreSQL, server and worker. Server is exposed on a macvlan network.
 ### caddy
     Simple reverse proxy server with certificates from certbot
 ### caddy-dashboard
