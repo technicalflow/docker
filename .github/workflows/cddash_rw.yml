@@ -1,11 +1,11 @@
-name: cddash
+name: cddash_rw
 
 on:
   push:
     branches: [master]
     paths:
       - "caddy-dashboard/cddash_rw/**"
-      - ".github/workflows/cddash.yml"
+      - ".github/workflows/cddash_rw.yml"
       - ".github/workflows/_build.yml"
   schedule:
     - cron: "0 2 * * 1"
