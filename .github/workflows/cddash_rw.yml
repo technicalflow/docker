@@ -1,0 +1,20 @@
+name: cddash
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "caddy-dashboard/cddash_rw/**"
+      - ".github/workflows/cddash.yml"
+      - ".github/workflows/_build.yml"
+  schedule:
+    - cron: "0 2 * * 1"
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build.yml
+    with:
+      context: caddy-dashboard/cddash_rw
+      image: techfellow/cadash:rw
+    secrets: inherit
