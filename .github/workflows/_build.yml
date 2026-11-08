@@ -1,0 +1,57 @@
+name: build-image
+
+on:
+  workflow_call:
+    inputs:
+      context:
+        description: Build context folder
+        required: true
+        type: string
+      image:
+        description: Docker Hub image with tag
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-qemu-action@v3
+
+      - uses: docker/setup-buildx-action@v3
+
+      # Build amd64 only and load it locally for the smoke test.
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ inputs.context }}
+          platforms: linux/amd64
+          tags: ci-test:latest
+          load: true
+          cache-from: type=gha,scope=${{ inputs.context }}
+
+      # Fail if the container exits within the wait window.
+      - name: Smoke test
+        run: |
+          docker run -d --name smoke ci-test:latest
+          sleep 10
+          docker logs smoke
+          test "$(docker inspect -f '{{.State.Running}}' smoke)" = true
+
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ inputs.context }}
+          platforms: linux/amd64,linux/arm/v7,linux/arm64/v8
+          tags: ${{ inputs.image }}
+          push: true
+          cache-from: type=gha,scope=${{ inputs.context }}
+          cache-to: type=gha,mode=max,scope=${{ inputs.context }}

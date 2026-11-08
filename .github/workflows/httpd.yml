@@ -1,0 +1,20 @@
+name: httpd
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "httpd/**"
+      - ".github/workflows/httpd.yml"
+      - ".github/workflows/_build.yml"
+  schedule:
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build.yml
+    with:
+      context: httpd
+      image: techfellow/httpdappa:latest
+    secrets: inherit

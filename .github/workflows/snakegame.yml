@@ -1,0 +1,20 @@
+name: snakegame
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "snakegame/**"
+      - ".github/workflows/snakegame.yml"
+      - ".github/workflows/_build.yml"
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build.yml
+    with:
+      context: snakegame
+      image: techfellow/snakegame:latest
+    secrets: inherit
