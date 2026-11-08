@@ -1,6 +1,6 @@
 # App image
 FROM nginx:stable
-LABEL maintainer="Marek from mysmall.cloud"
+LABEL org.opencontainers.image.authors="marek@techfellow.it"
 
 # COPY website/index.html /usr/share/nginx/html
 COPY --chmod=755 my-entrypoint.sh /my-entrypoint.sh

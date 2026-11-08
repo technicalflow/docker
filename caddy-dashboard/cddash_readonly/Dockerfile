@@ -1,13 +1,12 @@
 FROM python:3-alpine
+LABEL org.opencontainers.image.authors="marek@techfellow.it"
 
 WORKDIR /app
 
-# Copy application files
 COPY generate.py /app/generate.py
 COPY style.css /app/style.css
 COPY index.html /app/index.html
 
-# Environment variables
 ENV PYTHONUNBUFFERED=1 \
     CADDYFILE_PATH=/etc/caddy \
     PORT=80
