@@ -11,11 +11,6 @@ on:
         description: Docker Hub image with tag
         required: true
         type: string
-      run_args:
-        description: Extra docker run args for the smoke test (e.g. mounts, env)
-        required: false
-        type: string
-        default: ""
       curl_args:
         description: Extra curl args for the smoke test
         required: false
@@ -49,10 +44,9 @@ jobs:
       # Fail unless the app answers HTTP 2xx on port 80 within ~20s.
       - name: Smoke test
         env:
-          RUN_ARGS: ${{ inputs.run_args }}
           CURL_ARGS: ${{ inputs.curl_args }}
         run: |
-          docker run -d --name smoke -p 8080:80 $RUN_ARGS ci-test:latest
+          docker run -d --name smoke -p 8080:80 ci-test:latest
           curl -fsS -o /dev/null --retry 10 --retry-delay 2 --retry-all-errors $CURL_ARGS http://localhost:8080/ \
             || { docker logs smoke; exit 1; }
 

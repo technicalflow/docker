@@ -17,5 +17,4 @@ jobs:
     with:
       context: caddy-dashboard/cddash_readonly
       image: techfellow/cadash:latest
-      run_args: -v ${{ github.workspace }}/caddy-dashboard/cddash_readonly/Caddyfile:/etc/caddy/Caddyfile:ro
     secrets: inherit
