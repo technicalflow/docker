@@ -2,7 +2,7 @@ name: snakegame
 
 on:
   push:
-    branches: [main]
+    branches: [master]
     paths:
       - "snakegame/**"
       - ".github/workflows/snakegame.yml"

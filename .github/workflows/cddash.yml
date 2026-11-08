@@ -2,7 +2,7 @@ name: cddash
 
 on:
   push:
-    branches: [main]
+    branches: [master]
     paths:
       - "caddy-dashboard/cddash_readonly/**"
       - ".github/workflows/cddash.yml"
