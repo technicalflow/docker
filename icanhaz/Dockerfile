@@ -1,14 +1,14 @@
 FROM python:3.12-alpine
 LABEL org.opencontainers.image.authors="marek@techfellow.it"
 
-RUN adduser -D -u 1000 appuser
+# RUN adduser -D -u 1000 appuser
 
 WORKDIR /app
 COPY ipcheck.py .
 
 RUN pip install --no-cache-dir flask gunicorn
 
-USER appuser
+# USER appuser
 
 HEALTHCHECK --interval=1m --timeout=5s CMD wget -q --spider http://127.0.0.1/ || exit 1
 
