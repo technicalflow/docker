@@ -17,5 +17,5 @@ jobs:
     with:
       context: icanhaz
       image: techfellow/ipcheck:latest
-      curl_args: --haproxy-protocol # gunicorn runs with --proxy-protocol
+      # curl_args: --haproxy-protocol # only when gunicorn runs with --proxy-protocol
     secrets: inherit
