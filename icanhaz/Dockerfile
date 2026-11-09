@@ -13,8 +13,9 @@ RUN pip install --no-cache-dir flask gunicorn
 HEALTHCHECK --interval=1m --timeout=5s CMD wget -q --spider http://127.0.0.1/ || exit 1
 
 EXPOSE 80
+CMD ["gunicorn", "--bind", "0.0.0.0:80", "ipcheck:application"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:80", "--proxy-protocol", "--proxy-allow-from", "*", "ipcheck:application"]
 # CMD ["gunicorn", "--bind", "0.0.0.0:80", "ipcheck:application"]
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "--proxy-protocol", "--proxy-allow-from", "*", "ipcheck:application"]
 
 
 # For IPv6
