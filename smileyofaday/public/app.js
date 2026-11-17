@@ -5,6 +5,7 @@
 // every emoji appears exactly once before any emoji repeats. The shuffle is
 // deterministic, so every visitor sees the same smiley on the same date,
 // and no database or server state is needed.
+// Rotation logic is mirrored server-side in public/smiley.js — keep in sync.
 
 (function () {
   const EMOJIS = window.EMOJIS;
@@ -144,7 +145,7 @@
     const el = e.currentTarget;
     el.classList.remove("boop");
     void el.offsetWidth;
-    el.classList.add("boo ");
+    el.classList.add("boop");
   });
 
   render();

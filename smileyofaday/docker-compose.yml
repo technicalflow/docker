@@ -3,5 +3,8 @@ services:
     build: .
     container_name: smiley-of-a-day
     ports:
-      - "8080:80"
+      - "80:80"
+    environment:
+      # Server-side "today" for curl/text/json; browsers use their own local date
+      TZ: UTC
     restart: unless-stopped
