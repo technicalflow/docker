@@ -1,0 +1,20 @@
+name: snakegame
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "smileyofaday/**"
+      - ".github/workflows/smileyofaday.yml"
+      - ".github/workflows/_build.yml"
+  schedule:
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build.yml
+    with:
+      context: smileyofaday
+      image: techfellow/smiley:latest
+    secrets: inherit

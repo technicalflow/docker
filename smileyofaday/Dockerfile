@@ -1,6 +1,5 @@
 FROM nginx:1.27-alpine
 
-# tzdata: lets TZ select the server-side "today" (curl/text/json endpoints)
 RUN apk add --no-cache tzdata
 
 # Enable bundled njs module (main context, must precede "events")
