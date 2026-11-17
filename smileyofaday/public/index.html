@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smiley of a Day</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>😊</text></svg>">
+  <style>
+    :root {
+      --bg1: #fffbea;
+      --bg2: #ffeef3;
+      --bg3: #eef6ff;
+      --card: rgba(255, 255, 255, 0.85);
+      --ink: #3b2f4a;
+      --soft: #7a6c88;
+      --button: #ff7a59;        /* header band + share button */
+      --button-dark: #e8603f;
+      --emoji-font: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: ui-rounded, "SF Pro Rounded", "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(135deg, var(--bg1), var(--bg2) 50%, var(--bg3));
+      background-size: 200% 200%;
+      animation: drift 18s ease-in-out infinite alternate;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+    @keyframes drift { from { background-position: 0% 30%; } to { background-position: 100% 70%; } }
+
+    .bubble {
+      position: fixed; border-radius: 50%; opacity: .5; pointer-events: none;
+      background: #fff; animation: float 14s ease-in-out infinite;
+    }
+    .b1 { width: 180px; height: 180px; top: -40px; left: -40px; }
+    .b2 { width: 120px; height: 120px; bottom: 8%; right: 6%; animation-delay: -4s; }
+    .b3 { width: 70px; height: 70px; top: 18%; right: 20%; animation-delay: -8s; }
+    @keyframes float { 50% { transform: translateY(-24px); } }
+
+    main {
+      position: relative;
+      width: min(440px, 100%);
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border-radius: 32px;
+      padding: 32px 28px 26px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(80, 40, 90, 0.12);
+    }
+    .band {
+      margin: -32px -28px 0;
+      padding: 22px 20px 20px;
+      background: linear-gradient(180deg, var(--button), var(--button-dark));
+      border-radius: 32px 32px 0 0;
+      color: #fff;
+    }
+    .date {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      opacity: .95;
+    }
+    h1 {
+      margin: 4px 0 0;
+      font-size: clamp(1.6rem, 7vw, 2.1rem);
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      line-height: 1.15;
+    }
+    /* Emoji: kept as crisp as possible.
+       - no CSS filter on the glyph (filters rasterize it and soften edges)
+       - no rotation in the idle animation (rotating a bitmap glyph resamples it)
+       - 160px = the largest image size inside Apple Color Emoji */
+    .stage {
+      position: relative;
+      display: inline-block;
+      margin: 18px 0 6px;
+    }
+    .emoji {
+      position: relative;
+      z-index: 1;
+      font-family: var(--emoji-font);
+      font-size: 160px;
+      line-height: 1.15;
+      cursor: pointer;
+      user-select: none;
+      display: inline-block;
+      animation: pop .6s cubic-bezier(.2, 1.5, .4, 1) both, bob 4s ease-in-out .6s infinite;
+    }
+    .shadow {
+      position: absolute;
+      left: 22%; right: 22%; bottom: 4%;
+      height: 12px;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(80, 40, 90, .22), transparent);
+      animation: shadow 4s ease-in-out .6s infinite;
+    }
+    .emoji.boop { animation: boop .45s cubic-bezier(.2, 1.5, .4, 1); }
+    @keyframes pop { from { transform: scale(.4); opacity: 0; } }
+    @keyframes bob { 50% { transform: translateY(-8px); } }
+    @keyframes shadow { 50% { transform: scaleX(.85); opacity: .7; } }
+    @keyframes boop { 40% { transform: translateY(-14px); } }
+
+    .name {
+      margin: 0;
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+    .name::first-letter { text-transform: uppercase; }
+
+    .share {
+      margin: 20px auto 0;
+      width: min(280px, 100%);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      font: inherit; font-weight: 700; font-size: 1.05rem;
+      color: #fff;
+      background: var(--button);
+      border: 0; border-radius: 999px;
+      padding: 14px 26px;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(232, 96, 63, .3);
+      transition: transform .15s ease, background .15s ease;
+    }
+    .share:hover { background: var(--button-dark); }
+    .share:active { transform: scale(.97); }
+    .share svg { width: 18px; height: 18px; }
+
+    footer {
+      margin-top: 22px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(122, 108, 136, .35);
+      font-size: .85rem;
+      color: var(--soft);
+    }
+
+    .toast {
+      position: fixed; left: 50%; bottom: 28px;
+      transform: translate(-50%, 20px);
+      background: var(--ink); color: #fff;
+      padding: 10px 18px; border-radius: 999px;
+      font-size: .9rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s, transform .25s;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div>
+  <main>
+    <header class="band">
+      <h1>Smiley of a Day</h1>
+      <p class="date" id="date"></p>
+    </header>
+    <div class="stage">
+      <div class="emoji" id="emoji" role="img" aria-labelledby="name" title="Boop me!"></div>
+      <div class="shadow" aria-hidden="true"></div>
+    </div>
+    <p class="name" id="name"></p>
+    <button class="share" id="share" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3v13"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>
+      </svg>
+      Share
+    </button>
+    <footer id="countdown"></footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="emojis.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

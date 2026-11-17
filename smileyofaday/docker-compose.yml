@@ -1,0 +1,7 @@
+services:
+  smiley-of-a-day:
+    build: .
+    container_name: smiley-of-a-day
+    ports:
+      - "8080:80"
+    restart: unless-stopped
