@@ -45,6 +45,9 @@ Most of the working images can be found on https://hub.docker.com/u/techfellow
 	Pkg version installs powershell from apt package but is only for amd64
 ### samba-timemachine
 	Samba file sharing for Time Machine backups
+### smileyofaday
+	Smiley of a Day - a new emoji every day.
+	Browsers get a web page, curl gets emoji directly and Accept: application/json gets JSON
 ### snakegame
 	Simple Snake game to show case application deployment on Docker
 ### traefik
